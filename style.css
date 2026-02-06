@@ -145,6 +145,9 @@ body::before {
 }
 
 .card__word { font-family: var(--font-greek); font-size: 1.9rem; font-weight: 700; color: var(--text-greek); margin-bottom: 2px; }
+.card__word-row { display: flex; align-items: center; gap: 12px; margin-bottom: 2px; }
+.card__copy-btn { flex-shrink: 0; font-size: 0.75rem !important; padding: 5px 10px !important; opacity: 0.7; transition: opacity 0.2s; }
+.card__copy-btn:hover { opacity: 1; }
 .card__article { font-weight: 400; color: var(--text-muted); font-size: 1.4rem; margin-right: 6px; }
 .card__meaning { font-size: 0.88rem; color: var(--text-muted); font-style: italic; margin-bottom: 18px; }
 
@@ -213,6 +216,29 @@ body::before {
 .action-row { display: flex; gap: 10px; margin-top: 14px; }
 .action-row .btn { flex: 1; }
 
+/* ── Skip Row ── */
+.skip-row { text-align: right; margin-top: 8px; }
+
+/* ── Full Greek Keyboard ── */
+.keyboard { margin-bottom: 12px; display: flex; flex-direction: column; gap: 3px; }
+.keyboard__row { display: flex; gap: 3px; justify-content: center; }
+.keyboard__key {
+  background: var(--bg-input); border: 1px solid var(--border); border-radius: 5px;
+  padding: 0; font-family: var(--font-greek); font-size: clamp(0.82rem, 2.2vw, 1rem);
+  color: var(--text-secondary); cursor: pointer; transition: all 0.12s;
+  text-align: center; user-select: none; line-height: 1;
+  flex: 1 1 0; min-width: 0; max-width: 52px;
+  aspect-ratio: 1 / 1;
+  display: flex; align-items: center; justify-content: center;
+}
+.keyboard__key:hover { background: var(--bg-card-hover); border-color: var(--border-light); color: var(--text-primary); }
+.keyboard__key:active { transform: scale(0.9); background: var(--accent-gold-glow); }
+.keyboard__key--wide { flex: 2.5 1 0; max-width: 120px; aspect-ratio: auto; padding: 10px 0; font-size: clamp(0.78rem, 2vw, 0.9rem); }
+
+/* ── Skipped state ── */
+.stats__value--skipped { color: var(--text-muted); }
+.feedback--skipped { background: var(--accent-blue-bg); border: 1px solid rgba(107,163,212,0.25); color: var(--accent-blue); }
+
 /* ── Loading ── */
 .loading { text-align: center; padding: 60px 20px; color: var(--text-muted); font-style: italic; }
 .loading__spinner {
@@ -230,4 +256,6 @@ body::before {
   .stats__value { font-size: 1.1rem; }
   .input-field { font-size: 1rem; padding: 10px 12px; }
   .diacritics__btn { padding: 6px 7px; min-width: 30px; font-size: 0.9rem; }
+  .keyboard__key { font-size: 0.82rem; max-width: 38px; }
+  .keyboard__key--wide { max-width: 90px; padding: 9px 0; }
 }

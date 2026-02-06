@@ -273,6 +273,16 @@ const DIACRITICS = [
   "ᾳ", "ῃ", "ῳ"
 ];
 
+// Full Greek keyboard layout
+const GREEK_KEYBOARD = [
+  ["α", "β", "γ", "δ", "ε", "ζ", "η", "θ"],
+  ["ι", "κ", "λ", "μ", "ν", "ξ", "ο", "π"],
+  ["ρ", "σ", "ς", "τ", "υ", "φ", "χ", "ψ", "ω"],
+  ["ἀ", "ἁ", "ά", "ᾶ", "ὰ", "ᾳ", "ἐ", "ἑ", "έ"],
+  ["ἠ", "ἡ", "ή", "ῆ", "ῃ", "ἰ", "ἱ", "ί", "ῖ"],
+  ["ὀ", "ὁ", "ό", "ὐ", "ὑ", "ύ", "ῦ", "ὼ", "ώ", "ῶ", "ῳ"],
+];
+
 // ── State ──
 let allNouns = [];
 let filteredNouns = [];
@@ -289,10 +299,13 @@ let includeArticle = false;
 let settingsOpen = false;
 
 // Stats
-let stats = { correct: 0, wrong: 0, streak: 0, bestStreak: 0 };
+let stats = { correct: 0, wrong: 0, streak: 0, bestStreak: 0, skipped: 0 };
 
 // Learning mode: track error counts per noun
 let errorCounts = {};
+
+// Full keyboard mode
+let showFullKeyboard = false;
 
 // ── Init ──
 async function init() {
@@ -407,6 +420,13 @@ function checkAnswer(input) {
   saveStats();
 }
 
+function skipQuestion() {
+  answerState = "skipped";
+  stats.skipped++;
+  stats.streak = 0;
+  saveStats();
+}
+
 // ═══════════════════════════════════════════════════════════
 // RENDERING
 // ═══════════════════════════════════════════════════════════
@@ -437,6 +457,7 @@ function renderStats() {
       <div class="stats__item"><div class="stats__value stats__value--wrong">${stats.wrong}</div><div class="stats__label">Falsch</div></div>
       <div class="stats__item"><div class="stats__value stats__value--streak">${stats.streak}</div><div class="stats__label">Serie</div></div>
       <div class="stats__item"><div class="stats__value stats__value--pct">${pct}%</div><div class="stats__label">Quote</div></div>
+      ${stats.skipped > 0 ? `<div class="stats__item"><div class="stats__value stats__value--skipped">${stats.skipped}</div><div class="stats__label">Übersprungen</div></div>` : ''}
     </div>`;
 }
 
@@ -472,6 +493,14 @@ function renderSettings() {
         </div>
       </div>
       <div class="settings__section">
+        <div class="toggle-row">
+          <span class="toggle-row__label">Griechische Volltastatur</span>
+          <div class="toggle ${showFullKeyboard ? 'toggle--on' : ''}" id="toggleKeyboard">
+            <div class="toggle__knob"></div>
+          </div>
+        </div>
+      </div>
+      <div class="settings__section">
         <button class="btn btn--ghost btn--small btn--full" id="resetStats">Statistik zurücksetzen</button>
       </div>
     </div>`;
@@ -493,25 +522,29 @@ function renderCard() {
   let html = `
     <div class="card">
       <div class="card__badge">${declLabel} · ${GENDER_NAMES[noun.gender]}</div>
-      <div class="card__word"><span class="card__article">${genderArt}</span>${noun.lemma}</div>
+      <div class="card__word-row">
+        <div class="card__word"><span class="card__article">${genderArt}</span>${noun.lemma}</div>
+        <button class="btn btn--ghost btn--small card__copy-btn" id="copyStemBtn" title="Wortstamm ins Eingabefeld kopieren">📋 einfügen</button>
+      </div>
       <div class="card__meaning">»${noun.meaning}« — Gen. Sg.: ${noun.forms.sg.gen}</div>
       <div class="card__prompt">
         Bilde den <strong>${CASE_NAMES[currentCase]} ${NUM_NAMES[currentNum]}</strong>${articleHint}:
       </div>
-      <div class="diacritics" id="diacritics">
-        ${DIACRITICS.map(d => `<button class="diacritics__btn" data-char="${d}">${d}</button>`).join("")}
-      </div>
+      ${showFullKeyboard ? renderFullKeyboard() : renderDiacritics()}
       <div class="input-row">
         <input type="text" class="${inputClass}" id="answerInput"
           placeholder="Deine Antwort…" autocomplete="off" autocorrect="off"
           spellcheck="false" ${answerState ? 'disabled' : ''}>
         ${!answerState ? '<button class="btn" id="checkBtn">Prüfen</button>' : ''}
-      </div>`;
+      </div>
+      ${!answerState ? '<div class="skip-row"><button class="btn btn--ghost btn--small" id="skipBtn">Überspringen ⟫</button></div>' : ''}`;
 
   if (answerState === "correct") {
     html += `<div class="feedback feedback--correct">✓ Richtig! <span class="feedback__answer">${correctAnswer}</span></div>`;
   } else if (answerState === "wrong") {
     html += `<div class="feedback feedback--wrong">✗ Leider falsch. Richtig wäre: <span class="feedback__answer">${correctAnswer}</span></div>`;
+  } else if (answerState === "skipped") {
+    html += `<div class="feedback feedback--skipped">⟫ Übersprungen. Die Antwort wäre: <span class="feedback__answer">${correctAnswer}</span></div>`;
   }
 
   if (answerState) {
@@ -527,6 +560,28 @@ function renderCard() {
   }
 
   html += `</div>`;
+  return html;
+}
+
+function renderDiacritics() {
+  return `<div class="diacritics">${DIACRITICS.map(d => `<button class="diacritics__btn" data-char="${d}">${d}</button>`).join("")}</div>`;
+}
+
+function renderFullKeyboard() {
+  let html = '<div class="keyboard">';
+  for (const row of GREEK_KEYBOARD) {
+    html += '<div class="keyboard__row">';
+    for (const key of row) {
+      html += `<button class="keyboard__key" data-char="${key}">${key}</button>`;
+    }
+    html += '</div>';
+  }
+  // Special keys row
+  html += '<div class="keyboard__row">';
+  html += '<button class="keyboard__key keyboard__key--wide" data-action="space">␣</button>';
+  html += '<button class="keyboard__key keyboard__key--wide" data-action="backspace">⌫</button>';
+  html += '</div>';
+  html += '</div>';
   return html;
 }
 
@@ -575,7 +630,9 @@ function attachEvents() {
   const showPBtn = document.getElementById("showParadigmBtn");
   const settingsBtn = document.getElementById("settingsToggle");
   const toggleArt = document.getElementById("toggleArticle");
+  const toggleKbd = document.getElementById("toggleKeyboard");
   const resetBtn = document.getElementById("resetStats");
+  const skipBtn = document.getElementById("skipBtn");
 
   if (input && !answerState) {
     input.focus();
@@ -589,6 +646,23 @@ function attachEvents() {
 
   if (checkBtn) checkBtn.addEventListener("click", doCheck);
 
+  if (skipBtn) skipBtn.addEventListener("click", () => {
+    skipQuestion();
+    render();
+  });
+
+  // Copy lemma into input field
+  const copyBtn = document.getElementById("copyStemBtn");
+  if (copyBtn) copyBtn.addEventListener("click", () => {
+    const input = document.getElementById("answerInput");
+    if (input && !answerState) {
+      input.value = currentNoun.lemma;
+      input.focus();
+      // Place cursor at the end
+      input.setSelectionRange(input.value.length, input.value.length);
+    }
+  });
+
   if (nextBtn) nextBtn.addEventListener("click", () => {
     pickNext();
     render();
@@ -597,7 +671,6 @@ function attachEvents() {
   if (showPBtn) showPBtn.addEventListener("click", () => {
     showParadigm = !showParadigm;
     render();
-    // Scroll to paradigm
     if (showParadigm) {
       setTimeout(() => {
         const el = document.querySelector(".paradigm");
@@ -613,7 +686,6 @@ function attachEvents() {
 
   if (toggleArt) toggleArt.addEventListener("click", () => {
     includeArticle = !includeArticle;
-    // Recalculate current answer if not yet answered
     if (!answerState) {
       const forms = generateForms(currentNoun);
       let answer = forms[currentNum][currentCase];
@@ -629,8 +701,13 @@ function attachEvents() {
     render();
   });
 
+  if (toggleKbd) toggleKbd.addEventListener("click", () => {
+    showFullKeyboard = !showFullKeyboard;
+    render();
+  });
+
   if (resetBtn) resetBtn.addEventListener("click", () => {
-    stats = { correct: 0, wrong: 0, streak: 0, bestStreak: 0 };
+    stats = { correct: 0, wrong: 0, streak: 0, bestStreak: 0, skipped: 0 };
     errorCounts = {};
     saveStats();
     render();
@@ -651,7 +728,7 @@ function attachEvents() {
     });
   });
 
-  // Diacritics buttons
+  // Diacritics & keyboard buttons (both use data-char)
   document.querySelectorAll("[data-char]").forEach(btn => {
     btn.addEventListener("click", () => {
       const input = document.getElementById("answerInput");
@@ -665,8 +742,28 @@ function attachEvents() {
     });
   });
 
-  // Keyboard shortcut: Enter for next after answering
-  if (answerState && input) {
+  // Special keyboard actions (space, backspace)
+  document.querySelectorAll("[data-action]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const input = document.getElementById("answerInput");
+      if (input && !answerState) {
+        const pos = input.selectionStart || input.value.length;
+        const val = input.value;
+        if (btn.dataset.action === "space") {
+          input.value = val.slice(0, pos) + " " + val.slice(pos);
+          input.focus();
+          input.setSelectionRange(pos + 1, pos + 1);
+        } else if (btn.dataset.action === "backspace" && pos > 0) {
+          input.value = val.slice(0, pos - 1) + val.slice(pos);
+          input.focus();
+          input.setSelectionRange(pos - 1, pos - 1);
+        }
+      }
+    });
+  });
+
+  // Keyboard shortcut: Enter/Space for next after answering
+  if (answerState) {
     document.addEventListener("keydown", function handler(e) {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
