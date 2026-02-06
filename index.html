@@ -9,6 +9,8 @@
   <meta name="theme-color" content="#1a1612">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
 </head>
 <body>
 <div id="app">
@@ -398,6 +400,18 @@ function normalize(s) {
     .normalize("NFC");
 }
 
+// Strip all combining diacriticals (accents, breathings, iota subscriptum)
+// but keep the base Greek letters intact
+function stripAccents(s) {
+  return s.normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")  // combining diacriticals
+    .replace(/[\u1FBF\u1FCE\u1FDE\u1FFE\u1FCD\u1FDD\u0343\u0374\u0375]/g, "") // standalone breathings etc
+    .normalize("NFC")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function checkAnswer(input) {
   const userNorm = normalize(input);
   const correctNorm = normalize(correctAnswer);
@@ -407,10 +421,16 @@ function checkAnswer(input) {
     stats.correct++;
     stats.streak++;
     if (stats.streak > stats.bestStreak) stats.bestStreak = stats.streak;
-    // Reduce error count on correct
     if (errorCounts[currentNoun.lemma] && errorCounts[currentNoun.lemma] > 0) {
       errorCounts[currentNoun.lemma]--;
     }
+  } else if (stripAccents(userNorm) === stripAccents(correctNorm)) {
+    // Base letters match but accents/breathings differ → partial
+    answerState = "partial";
+    stats.partial = (stats.partial || 0) + 1;
+    stats.streak = 0;
+    // Lighter penalty in learning mode
+    errorCounts[currentNoun.lemma] = (errorCounts[currentNoun.lemma] || 0) + 0.5;
   } else {
     answerState = "wrong";
     stats.wrong++;
@@ -451,13 +471,15 @@ function renderHeader() {
 function renderStats() {
   const total = stats.correct + stats.wrong;
   const pct = total > 0 ? Math.round(stats.correct / total * 100) : 0;
+  const partial = stats.partial || 0;
   return `
     <div class="stats">
       <div class="stats__item"><div class="stats__value stats__value--correct">${stats.correct}</div><div class="stats__label">Richtig</div></div>
+      <div class="stats__item"><div class="stats__value stats__value--partial">${partial}</div><div class="stats__label">Betonung</div></div>
       <div class="stats__item"><div class="stats__value stats__value--wrong">${stats.wrong}</div><div class="stats__label">Falsch</div></div>
       <div class="stats__item"><div class="stats__value stats__value--streak">${stats.streak}</div><div class="stats__label">Serie</div></div>
       <div class="stats__item"><div class="stats__value stats__value--pct">${pct}%</div><div class="stats__label">Quote</div></div>
-      ${stats.skipped > 0 ? `<div class="stats__item"><div class="stats__value stats__value--skipped">${stats.skipped}</div><div class="stats__label">Übersprungen</div></div>` : ''}
+      ${stats.skipped > 0 ? `<div class="stats__item"><div class="stats__value stats__value--skipped">${stats.skipped}</div><div class="stats__label">Übersprg.</div></div>` : ''}
     </div>`;
 }
 
@@ -515,6 +537,7 @@ function renderCard() {
 
   let inputClass = "input-field";
   if (answerState === "correct") inputClass += " input-field--correct";
+  if (answerState === "partial") inputClass += " input-field--partial";
   if (answerState === "wrong") inputClass += " input-field--wrong";
 
   const articleHint = includeArticle && currentCase !== "voc" ? " (mit Artikel)" : "";
@@ -526,7 +549,7 @@ function renderCard() {
         <div class="card__word"><span class="card__article">${genderArt}</span>${noun.lemma}</div>
         <button class="btn btn--ghost btn--small card__copy-btn" id="copyStemBtn" title="Wortstamm ins Eingabefeld kopieren">📋 einfügen</button>
       </div>
-      <div class="card__meaning">»${noun.meaning}« — Gen. Sg.: ${noun.forms.sg.gen}</div>
+      <div class="card__meaning">»${noun.meaning}«</div>
       <div class="card__prompt">
         Bilde den <strong>${CASE_NAMES[currentCase]} ${NUM_NAMES[currentNum]}</strong>${articleHint}:
       </div>
@@ -541,6 +564,8 @@ function renderCard() {
 
   if (answerState === "correct") {
     html += `<div class="feedback feedback--correct">✓ Richtig! <span class="feedback__answer">${correctAnswer}</span></div>`;
+  } else if (answerState === "partial") {
+    html += `<div class="feedback feedback--partial">◐ Fast! Richtige Deklination, aber die Betonung stimmt nicht.<br>Korrekt: <span class="feedback__answer">${correctAnswer}</span></div>`;
   } else if (answerState === "wrong") {
     html += `<div class="feedback feedback--wrong">✗ Leider falsch. Richtig wäre: <span class="feedback__answer">${correctAnswer}</span></div>`;
   } else if (answerState === "skipped") {
@@ -707,7 +732,7 @@ function attachEvents() {
   });
 
   if (resetBtn) resetBtn.addEventListener("click", () => {
-    stats = { correct: 0, wrong: 0, streak: 0, bestStreak: 0, skipped: 0 };
+    stats = { correct: 0, wrong: 0, streak: 0, bestStreak: 0, skipped: 0, partial: 0 };
     errorCounts = {};
     saveStats();
     render();

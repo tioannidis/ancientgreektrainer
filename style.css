@@ -235,9 +235,12 @@ body::before {
 .keyboard__key:active { transform: scale(0.9); background: var(--accent-gold-glow); }
 .keyboard__key--wide { flex: 2.5 1 0; max-width: 120px; aspect-ratio: auto; padding: 10px 0; font-size: clamp(0.78rem, 2vw, 0.9rem); }
 
-/* ── Skipped state ── */
+/* ── Skipped & Partial states ── */
 .stats__value--skipped { color: var(--text-muted); }
+.stats__value--partial { color: #d4a853; }
 .feedback--skipped { background: var(--accent-blue-bg); border: 1px solid rgba(107,163,212,0.25); color: var(--accent-blue); }
+.feedback--partial { background: rgba(212,168,83,0.1); border: 1px solid rgba(212,168,83,0.25); color: #d4a853; }
+.input-field--partial { border-color: #d4a853 !important; background: rgba(212,168,83,0.08); }
 
 /* ── Loading ── */
 .loading { text-align: center; padding: 60px 20px; color: var(--text-muted); font-style: italic; }
