@@ -1,0 +1,10 @@
+{
+  "name": "Altgriechisch Deklinationstrainer",
+  "short_name": "Gr. Deklination",
+  "description": "Trainiere altgriechische Substantiv-Deklinationen",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1a1612",
+  "theme_color": "#1a1612",
+  "icons": []
+}

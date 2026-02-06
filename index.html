@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Altgriechisch Deklinationstrainer</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1a1612">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body>
+<div id="app">
+  <div class="loading" id="loading">
+    <div class="loading__spinner"></div>
+    <div>Lade Wortschatz…</div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// DEKLINATIONSLOGIK
+// ═══════════════════════════════════════════════════════════
+
+/**
+ * Alle Formen sind explizit in der JSON gespeichert.
+ * generateForms() gibt sie direkt zurück.
+ */
+function generateForms(noun) {
+  return noun.forms || null;
+}
+
+/* Legacy: Endungstabellen (nicht aktiv genutzt, aber als Referenz behalten) */
+const ENDINGS = {
+  "1_eta": {
+    sg: { nom: "ή", gen: "ῆς", dat: "ῇ", acc: "ήν", voc: "ή" },
+    pl: { nom: "αί", gen: "ῶν", dat: "αῖς", acc: "άς", voc: "αί" }
+  },
+  "1_alpha_long": {
+    sg: { nom: "ά", gen: "ᾶς", dat: "ᾷ", acc: "άν", voc: "ά" },
+    pl: { nom: "αί", gen: "ῶν", dat: "αῖς", acc: "άς", voc: "αί" }
+  },
+  "1_alpha_long_unaccented": {
+    sg: { nom: "α", gen: "ας", dat: "ᾳ", acc: "αν", voc: "α" },
+    pl: { nom: "αι", gen: "ῶν", dat: "αις", acc: "ας", voc: "αι" }
+  },
+  "1_alpha_short": {
+    sg: { nom: "α", gen: "ης", dat: "ῃ", acc: "αν", voc: "α" },
+    pl: { nom: "αι", gen: "ῶν", dat: "αις", acc: "ας", voc: "αι" }
+  },
+  "1_masc_hs": {
+    sg: { nom: "ης", gen: "ου", dat: "ῃ", acc: "ην", voc: "α" },
+    pl: { nom: "αι", gen: "ῶν", dat: "αις", acc: "ας", voc: "αι" }
+  },
+  "1_masc_as": {
+    sg: { nom: "ας", gen: "ου", dat: "ᾳ", acc: "αν", voc: "α" },
+    pl: { nom: "αι", gen: "ῶν", dat: "αις", acc: "ας", voc: "αι" }
+  },
+  "2_masc": {
+    sg: { nom: "ος", gen: "ου", dat: "ῳ", acc: "ον", voc: "ε" },
+    pl: { nom: "οι", gen: "ων", dat: "οις", acc: "ους", voc: "οι" }
+  },
+  "2_neut": {
+    sg: { nom: "ον", gen: "ου", dat: "ῳ", acc: "ον", voc: "ον" },
+    pl: { nom: "α", gen: "ων", dat: "οις", acc: "α", voc: "α" }
+  },
+  "3_stop": {
+    sg: { nom: null, gen: "ος", dat: "ι", acc: null, voc: null },
+    pl: { nom: null, gen: "ων", dat: "σι", acc: null, voc: null }
+  },
+  "3_stop_neut": {
+    sg: { nom: null, gen: "ος", dat: "ι", acc: null, voc: null },
+    pl: { nom: "α", gen: "ων", dat: "σι", acc: "α", voc: "α" }
+  },
+  "3_nasal": {
+    sg: { nom: null, gen: "ος", dat: "ι", acc: "α", voc: null },
+    pl: { nom: "ες", gen: "ων", dat: "σι", acc: "ας", voc: "ες" }
+  },
+  "3_nt": {
+    sg: { nom: null, gen: "ος", dat: "ι", acc: "α", voc: null },
+    pl: { nom: "ες", gen: "ων", dat: "σι", acc: "ας", voc: "ες" }
+  },
+  "3_liquid": {
+    sg: { nom: null, gen: "ος", dat: "ι", acc: "α", voc: null },
+    pl: { nom: "ες", gen: "ων", dat: "σι", acc: "ας", voc: "ες" }
+  },
+  "3_sigma": {
+    sg: { nom: null, gen: "ους", dat: "ει", acc: null, voc: null },
+    pl: { nom: "η", gen: "ῶν", dat: "εσι", acc: "η", voc: "η" }
+  },
+  "3_vowel_is": {
+    sg: { nom: null, gen: "εως", dat: "ει", acc: "ιν", voc: null },
+    pl: { nom: "εις", gen: "εων", dat: "εσι", acc: "εις", voc: "εις" }
+  },
+  "3_vowel_eus": {
+    sg: { nom: null, gen: "έως", dat: "εῖ", acc: "έα", voc: "εῦ" },
+    pl: { nom: "εῖς", gen: "έων", dat: "εῦσι", acc: "έας", voc: "εῖς" }
+  }
+};
+
+/**
+ * Da die 3. Deklination sehr unregelmäßig ist, verwenden wir für jedes Wort
+ * eine explizite Formentabelle ("forms") im JSON, oder generieren sie hier
+ * auf Basis des Stamms. Dies ist die Hauptfunktion.
+ */
+function generateForms(noun) {
+  // Wenn explizite Formen vorhanden, verwende diese
+  if (noun.forms) return noun.forms;
+
+  const type = noun.type;
+  const stem = noun.stem;
+  const lemma = noun.lemma;
+
+  // 1. und 2. Deklination: relativ regulär, Stamm + Endung
+  if (type.startsWith("1_") || type.startsWith("2_")) {
+    return buildRegularForms(stem, type, lemma);
+  }
+
+  // 3. Deklination: wir brauchen die expliziten Formen
+  return buildThirdDeclForms(noun);
+}
+
+function buildRegularForms(stem, type, lemma) {
+  const endings = ENDINGS[type];
+  if (!endings) return null;
+  const forms = { sg: {}, pl: {} };
+  for (const num of ["sg", "pl"]) {
+    for (const cas of ["nom", "gen", "dat", "acc", "voc"]) {
+      forms[num][cas] = stem + endings[num][cas];
+    }
+  }
+  // Nominativ Singular ist immer das Lemma
+  forms.sg.nom = lemma;
+  // Vokativ = Nominativ bei vielen Typen (außer 2. Dekl. Mask. und 1. Dekl. Mask.)
+  if (type === "1_eta" || type === "1_alpha_long" || type === "1_alpha_short") {
+    forms.sg.voc = lemma; // Vokativ = Nominativ bei Feminina der 1. Dekl.
+  }
+  return forms;
+}
+
+function buildThirdDeclForms(noun) {
+  const { stem, lemma, type, gender } = noun;
+  const gen = noun.gen; // Genitiv Singular aus der JSON
+  const forms = { sg: {}, pl: {} };
+
+  // Genitiv-Stamm extrahieren (Gen.Sg. minus Endung)
+  let genStem = stem;
+
+  // Nom.Sg. ist immer das Lemma
+  forms.sg.nom = lemma;
+
+  if (type === "3_sigma") {
+    // σ-Stämme (Neutra auf -ος): γένος, γένους
+    // Stamm: γενεσ-, kontrahierte Formen
+    const rawStem = stem.replace(/εσ$/, ''); // z.B. "γεν" von "γενεσ"
+    forms.sg.nom = lemma;
+    forms.sg.gen = gen;
+    forms.sg.dat = rawStem + "ει";
+    forms.sg.acc = lemma; // Neutra: Akk = Nom
+    forms.sg.voc = lemma;
+    forms.pl.nom = rawStem + "η";
+    forms.pl.gen = genStem.replace(/εσ$/, '') + "ῶν";
+    forms.pl.dat = stem + "ι"; // z.B. γένεσι
+    forms.pl.acc = rawStem + "η";
+    forms.pl.voc = rawStem + "η";
+    return forms;
+  }
+
+  if (type === "3_vowel_is") {
+    // ι-Stämme: πόλις, πόλεως
+    const baseStem = stem.replace(/ι$/, ''); // πολ
+    forms.sg.nom = lemma;
+    forms.sg.gen = gen;
+    forms.sg.dat = baseStem + "ει";
+    forms.sg.acc = baseStem + "ιν";
+    forms.sg.voc = baseStem + "ι";
+    forms.pl.nom = baseStem + "εις";
+    forms.pl.gen = baseStem + "εων";
+    forms.pl.dat = baseStem + "εσι";
+    forms.pl.acc = baseStem + "εις";
+    forms.pl.voc = baseStem + "εις";
+    return forms;
+  }
+
+  if (type === "3_vowel_eus") {
+    // ευ-Stämme: βασιλεύς, βασιλέως
+    const baseStem = stem.replace(/ε$/, ''); // βασιλ
+    forms.sg.nom = lemma;
+    forms.sg.gen = gen;
+    forms.sg.dat = baseStem + "εῖ";
+    forms.sg.acc = baseStem + "έα";
+    forms.sg.voc = baseStem + "εῦ";
+    forms.pl.nom = baseStem + "εῖς";
+    forms.pl.gen = baseStem + "έων";
+    forms.pl.dat = baseStem + "εῦσι";
+    forms.pl.acc = baseStem + "έας";
+    forms.pl.voc = baseStem + "εῖς";
+    return forms;
+  }
+
+  // Allgemeine 3. Deklination (stops, nasals, liquids, nt-Stämme)
+  // Hier nutzen wir Stamm aus dem Genitiv
+  const genEnd = gen.slice(-2);
+  genStem = gen.replace(/ος$/, '');
+
+  forms.sg.nom = lemma;
+  forms.sg.gen = gen;
+  forms.sg.dat = genStem + "ι";
+  forms.sg.voc = lemma; // Default
+
+  if (gender === "n") {
+    // Neutra: Akk = Nom, Plural Nom/Akk/Vok auf -α
+    forms.sg.acc = lemma;
+    forms.sg.voc = lemma;
+    forms.pl.nom = genStem + "α";
+    forms.pl.acc = genStem + "α";
+    forms.pl.voc = genStem + "α";
+  } else {
+    forms.sg.acc = genStem + "α";
+    forms.pl.nom = genStem + "ες";
+    forms.pl.acc = genStem + "ας";
+    forms.pl.voc = genStem + "ες";
+  }
+  forms.pl.gen = genStem + "ων";
+  forms.pl.dat = genStem + "σι";
+
+  // Spezial-Vokative
+  if (type === "3_nasal" || type === "3_nt") {
+    // Vok. Sg. oft = Stamm ohne Endung
+    // z.B. δαῖμον (von δαίμων), γέρον (von γέρων)
+    if (lemma.endsWith("ων")) {
+      forms.sg.voc = genStem.replace(/ο(ν|ντ)$/, 'ον');
+      if (type === "3_nt") {
+        forms.sg.voc = genStem.replace(/οντ$/, 'ον');
+      }
+    }
+  }
+
+  return forms;
+}
+
+// ═══════════════════════════════════════════════════════════
+// ARTIKEL
+// ═══════════════════════════════════════════════════════════
+
+let ARTICLES = {};
+
+// ═══════════════════════════════════════════════════════════
+// ANWENDUNG
+// ═══════════════════════════════════════════════════════════
+
+const CASES = ["nom", "gen", "dat", "acc", "voc"];
+const CASE_NAMES = { nom: "Nominativ", gen: "Genitiv", dat: "Dativ", acc: "Akkusativ", voc: "Vokativ" };
+const NUM_NAMES = { sg: "Singular", pl: "Plural" };
+const GENDER_NAMES = { m: "maskulin", f: "feminin", n: "neutrum" };
+const DECL_LABELS = {
+  "1_eta": "1. Dekl. (η)", "1_alpha_long": "1. Dekl. (ᾱ)", "1_alpha_short": "1. Dekl. (ᾰ)",
+  "1_masc_hs": "1. Dekl. mask. (ης)", "1_masc_as": "1. Dekl. mask. (ας)",
+  "2_masc": "2. Dekl. (ος)", "2_neut": "2. Dekl. (ον)",
+  "3_stop": "3. Dekl. (Verschlusslaut)", "3_nasal": "3. Dekl. (Nasal)",
+  "3_liquid": "3. Dekl. (Liquida)", "3_sigma": "3. Dekl. (σ-Stamm)",
+  "3_vowel_is": "3. Dekl. (ι-Stamm)", "3_vowel_eus": "3. Dekl. (ευ-Stamm)",
+  "3_nt": "3. Dekl. (ντ-Stamm)"
+};
+
+const DIACRITICS = [
+  "ά", "έ", "ή", "ί", "ό", "ύ", "ώ",
+  "ᾶ", "ῆ", "ῖ", "ῦ", "ῶ",
+  "ὰ", "ὲ", "ὴ", "ὶ", "ὸ", "ὺ", "ὼ",
+  "ἀ", "ἐ", "ἠ", "ἰ", "ὀ", "ὐ",
+  "ἁ", "ἑ", "ἡ", "ἱ", "ὁ", "ὑ",
+  "ᾳ", "ῃ", "ῳ"
+];
+
+// ── State ──
+let allNouns = [];
+let filteredNouns = [];
+let currentNoun = null;
+let currentCase = "";
+let currentNum = "";
+let correctAnswer = "";
+let answerState = null; // null | "correct" | "wrong"
+let showParadigm = false;
+
+// Filter state
+let selectedDecl = new Set(["1", "2", "3"]);
+let includeArticle = false;
+let settingsOpen = false;
+
+// Stats
+let stats = { correct: 0, wrong: 0, streak: 0, bestStreak: 0 };
+
+// Learning mode: track error counts per noun
+let errorCounts = {};
+
+// ── Init ──
+async function init() {
+  try {
+    const resp = await fetch("nouns.json");
+    const data = await resp.json();
+    allNouns = data.nouns;
+    ARTICLES = data.meta.articles;
+    loadStats();
+    applyFilters();
+    render();
+  } catch (e) {
+    document.getElementById("app").innerHTML =
+      `<div class="loading" style="color:var(--accent-wrong)">Fehler beim Laden: ${e.message}<br>Stelle sicher, dass nouns.json vorhanden ist.</div>`;
+  }
+}
+
+function loadStats() {
+  try {
+    const saved = localStorage.getItem("greek_trainer_stats");
+    if (saved) stats = JSON.parse(saved);
+    const savedErrors = localStorage.getItem("greek_trainer_errors");
+    if (savedErrors) errorCounts = JSON.parse(savedErrors);
+  } catch (e) {}
+}
+
+function saveStats() {
+  try {
+    localStorage.setItem("greek_trainer_stats", JSON.stringify(stats));
+    localStorage.setItem("greek_trainer_errors", JSON.stringify(errorCounts));
+  } catch (e) {}
+}
+
+function applyFilters() {
+  filteredNouns = allNouns.filter(n => {
+    const declNum = n.type.charAt(0);
+    return selectedDecl.has(declNum);
+  });
+  if (filteredNouns.length === 0) filteredNouns = [...allNouns];
+}
+
+// ── Pick next question (learning mode: weight errors) ──
+function pickNext() {
+  if (filteredNouns.length === 0) return;
+
+  // Build weighted pool: nouns with errors appear more often
+  const pool = [];
+  for (const n of filteredNouns) {
+    const errors = errorCounts[n.lemma] || 0;
+    const weight = 1 + Math.min(errors, 5); // max 6x weight
+    for (let i = 0; i < weight; i++) pool.push(n);
+  }
+
+  // Avoid same noun twice in a row
+  let attempts = 0;
+  let noun;
+  do {
+    noun = pool[Math.floor(Math.random() * pool.length)];
+    attempts++;
+  } while (noun === currentNoun && pool.length > 1 && attempts < 10);
+
+  currentNoun = noun;
+  currentCase = CASES[Math.floor(Math.random() * CASES.length)];
+  currentNum = Math.random() < 0.5 ? "sg" : "pl";
+  answerState = null;
+  showParadigm = false;
+
+  // Compute correct answer
+  const forms = generateForms(currentNoun);
+  if (!forms || !forms[currentNum] || !forms[currentNum][currentCase]) {
+    // Fallback: skip problematic form, pick again
+    pickNext();
+    return;
+  }
+  let answer = forms[currentNum][currentCase];
+  if (includeArticle && currentCase !== "voc") {
+    const art = ARTICLES[currentNoun.gender];
+    if (art && art[currentNum] && art[currentNum][currentCase]) {
+      const artForm = art[currentNum][currentCase];
+      if (artForm) answer = artForm + " " + answer;
+    }
+  }
+  correctAnswer = answer;
+}
+
+// ── Normalize for comparison ──
+function normalize(s) {
+  return s.trim().toLowerCase()
+    .replace(/\s+/g, " ")
+    .normalize("NFC");
+}
+
+function checkAnswer(input) {
+  const userNorm = normalize(input);
+  const correctNorm = normalize(correctAnswer);
+
+  if (userNorm === correctNorm) {
+    answerState = "correct";
+    stats.correct++;
+    stats.streak++;
+    if (stats.streak > stats.bestStreak) stats.bestStreak = stats.streak;
+    // Reduce error count on correct
+    if (errorCounts[currentNoun.lemma] && errorCounts[currentNoun.lemma] > 0) {
+      errorCounts[currentNoun.lemma]--;
+    }
+  } else {
+    answerState = "wrong";
+    stats.wrong++;
+    stats.streak = 0;
+    errorCounts[currentNoun.lemma] = (errorCounts[currentNoun.lemma] || 0) + 1;
+  }
+  saveStats();
+}
+
+// ═══════════════════════════════════════════════════════════
+// RENDERING
+// ═══════════════════════════════════════════════════════════
+
+function render() {
+  if (!currentNoun) pickNext();
+  const app = document.getElementById("app");
+  app.innerHTML = renderHeader() + renderStats() + renderSettingsToggle() +
+    (settingsOpen ? renderSettings() : "") + renderCard();
+  attachEvents();
+}
+
+function renderHeader() {
+  return `
+    <div class="header">
+      <span class="header__icon">🏛️</span>
+      <div class="header__title">Deklinationstrainer</div>
+      <div class="header__subtitle">Altgriechisch · ${filteredNouns.length} Substantive</div>
+    </div>`;
+}
+
+function renderStats() {
+  const total = stats.correct + stats.wrong;
+  const pct = total > 0 ? Math.round(stats.correct / total * 100) : 0;
+  return `
+    <div class="stats">
+      <div class="stats__item"><div class="stats__value stats__value--correct">${stats.correct}</div><div class="stats__label">Richtig</div></div>
+      <div class="stats__item"><div class="stats__value stats__value--wrong">${stats.wrong}</div><div class="stats__label">Falsch</div></div>
+      <div class="stats__item"><div class="stats__value stats__value--streak">${stats.streak}</div><div class="stats__label">Serie</div></div>
+      <div class="stats__item"><div class="stats__value stats__value--pct">${pct}%</div><div class="stats__label">Quote</div></div>
+    </div>`;
+}
+
+function renderSettingsToggle() {
+  return `
+    <button class="settings-toggle" id="settingsToggle">
+      ⚙ Einstellungen
+      <span class="settings-toggle__arrow ${settingsOpen ? 'settings-toggle__arrow--open' : ''}">▼</span>
+    </button>`;
+}
+
+function renderSettings() {
+  const declChips = [
+    { id: "1", label: "1. Dekl." },
+    { id: "2", label: "2. Dekl." },
+    { id: "3", label: "3. Dekl." }
+  ];
+
+  return `
+    <div class="settings">
+      <div class="settings__section">
+        <div class="settings__label">Deklinationen</div>
+        <div class="chip-group">
+          ${declChips.map(d => `<button class="chip ${selectedDecl.has(d.id) ? 'chip--active' : ''}" data-decl="${d.id}">${d.label}</button>`).join("")}
+        </div>
+      </div>
+      <div class="settings__section">
+        <div class="toggle-row">
+          <span class="toggle-row__label">Artikel mit abfragen</span>
+          <div class="toggle ${includeArticle ? 'toggle--on' : ''}" id="toggleArticle">
+            <div class="toggle__knob"></div>
+          </div>
+        </div>
+      </div>
+      <div class="settings__section">
+        <button class="btn btn--ghost btn--small btn--full" id="resetStats">Statistik zurücksetzen</button>
+      </div>
+    </div>`;
+}
+
+function renderCard() {
+  if (!currentNoun) return '<div class="loading">Keine Wörter für die aktuelle Auswahl.</div>';
+
+  const noun = currentNoun;
+  const genderArt = { m: "ὁ", f: "ἡ", n: "τό" }[noun.gender];
+  const declLabel = DECL_LABELS[noun.type] || noun.type;
+
+  let inputClass = "input-field";
+  if (answerState === "correct") inputClass += " input-field--correct";
+  if (answerState === "wrong") inputClass += " input-field--wrong";
+
+  const articleHint = includeArticle && currentCase !== "voc" ? " (mit Artikel)" : "";
+
+  let html = `
+    <div class="card">
+      <div class="card__badge">${declLabel} · ${GENDER_NAMES[noun.gender]}</div>
+      <div class="card__word"><span class="card__article">${genderArt}</span>${noun.lemma}</div>
+      <div class="card__meaning">»${noun.meaning}« — Gen. Sg.: ${noun.forms.sg.gen}</div>
+      <div class="card__prompt">
+        Bilde den <strong>${CASE_NAMES[currentCase]} ${NUM_NAMES[currentNum]}</strong>${articleHint}:
+      </div>
+      <div class="diacritics" id="diacritics">
+        ${DIACRITICS.map(d => `<button class="diacritics__btn" data-char="${d}">${d}</button>`).join("")}
+      </div>
+      <div class="input-row">
+        <input type="text" class="${inputClass}" id="answerInput"
+          placeholder="Deine Antwort…" autocomplete="off" autocorrect="off"
+          spellcheck="false" ${answerState ? 'disabled' : ''}>
+        ${!answerState ? '<button class="btn" id="checkBtn">Prüfen</button>' : ''}
+      </div>`;
+
+  if (answerState === "correct") {
+    html += `<div class="feedback feedback--correct">✓ Richtig! <span class="feedback__answer">${correctAnswer}</span></div>`;
+  } else if (answerState === "wrong") {
+    html += `<div class="feedback feedback--wrong">✗ Leider falsch. Richtig wäre: <span class="feedback__answer">${correctAnswer}</span></div>`;
+  }
+
+  if (answerState) {
+    html += `
+      <div class="action-row">
+        <button class="btn btn--ghost" id="showParadigmBtn">${showParadigm ? 'Tabelle ausblenden' : 'Ganze Deklination'}</button>
+        <button class="btn" id="nextBtn">Nächstes Wort →</button>
+      </div>`;
+  }
+
+  if (showParadigm) {
+    html += renderParadigm();
+  }
+
+  html += `</div>`;
+  return html;
+}
+
+function renderParadigm() {
+  const noun = currentNoun;
+  const forms = generateForms(noun);
+  if (!forms) return '';
+
+  const artForms = ARTICLES[noun.gender];
+
+  let rows = '';
+  for (const cas of CASES) {
+    const isHighlight = cas === currentCase;
+    const hlClass = isHighlight ? ' class="hl"' : '';
+    const sgArt = includeArticle && cas !== "voc" && artForms ? (artForms.sg[cas] + " ") : "";
+    const plArt = includeArticle && cas !== "voc" && artForms ? (artForms.pl[cas] + " ") : "";
+    const sgForm = forms.sg[cas] || "—";
+    const plForm = forms.pl[cas] || "—";
+    const hlSg = isHighlight && currentNum === "sg" ? ' class="hl"' : '';
+    const hlPl = isHighlight && currentNum === "pl" ? ' class="hl"' : '';
+    rows += `<tr>
+      <td>${CASE_NAMES[cas].slice(0, 3)}.</td>
+      <td${hlSg}>${sgArt}${sgForm}</td>
+      <td${hlPl}>${plArt}${plForm}</td>
+    </tr>`;
+  }
+
+  return `
+    <div class="paradigm">
+      <div class="paradigm__title">Vollständiges Paradigma</div>
+      <table class="paradigm__table">
+        <thead><tr><th></th><th>Singular</th><th>Plural</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// EVENT HANDLING
+// ═══════════════════════════════════════════════════════════
+
+function attachEvents() {
+  const input = document.getElementById("answerInput");
+  const checkBtn = document.getElementById("checkBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const showPBtn = document.getElementById("showParadigmBtn");
+  const settingsBtn = document.getElementById("settingsToggle");
+  const toggleArt = document.getElementById("toggleArticle");
+  const resetBtn = document.getElementById("resetStats");
+
+  if (input && !answerState) {
+    input.focus();
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        doCheck();
+      }
+    });
+  }
+
+  if (checkBtn) checkBtn.addEventListener("click", doCheck);
+
+  if (nextBtn) nextBtn.addEventListener("click", () => {
+    pickNext();
+    render();
+  });
+
+  if (showPBtn) showPBtn.addEventListener("click", () => {
+    showParadigm = !showParadigm;
+    render();
+    // Scroll to paradigm
+    if (showParadigm) {
+      setTimeout(() => {
+        const el = document.querySelector(".paradigm");
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }, 50);
+    }
+  });
+
+  if (settingsBtn) settingsBtn.addEventListener("click", () => {
+    settingsOpen = !settingsOpen;
+    render();
+  });
+
+  if (toggleArt) toggleArt.addEventListener("click", () => {
+    includeArticle = !includeArticle;
+    // Recalculate current answer if not yet answered
+    if (!answerState) {
+      const forms = generateForms(currentNoun);
+      let answer = forms[currentNum][currentCase];
+      if (includeArticle && currentCase !== "voc") {
+        const art = ARTICLES[currentNoun.gender];
+        if (art && art[currentNum] && art[currentNum][currentCase]) {
+          const artForm = art[currentNum][currentCase];
+          if (artForm) answer = artForm + " " + answer;
+        }
+      }
+      correctAnswer = answer;
+    }
+    render();
+  });
+
+  if (resetBtn) resetBtn.addEventListener("click", () => {
+    stats = { correct: 0, wrong: 0, streak: 0, bestStreak: 0 };
+    errorCounts = {};
+    saveStats();
+    render();
+  });
+
+  // Declension filter chips
+  document.querySelectorAll("[data-decl]").forEach(chip => {
+    chip.addEventListener("click", () => {
+      const d = chip.dataset.decl;
+      if (selectedDecl.has(d)) {
+        if (selectedDecl.size > 1) selectedDecl.delete(d);
+      } else {
+        selectedDecl.add(d);
+      }
+      applyFilters();
+      pickNext();
+      render();
+    });
+  });
+
+  // Diacritics buttons
+  document.querySelectorAll("[data-char]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const input = document.getElementById("answerInput");
+      if (input && !answerState) {
+        const pos = input.selectionStart || input.value.length;
+        const val = input.value;
+        input.value = val.slice(0, pos) + btn.dataset.char + val.slice(pos);
+        input.focus();
+        input.setSelectionRange(pos + btn.dataset.char.length, pos + btn.dataset.char.length);
+      }
+    });
+  });
+
+  // Keyboard shortcut: Enter for next after answering
+  if (answerState && input) {
+    document.addEventListener("keydown", function handler(e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        document.removeEventListener("keydown", handler);
+        pickNext();
+        render();
+      }
+    });
+  }
+}
+
+function doCheck() {
+  const input = document.getElementById("answerInput");
+  if (!input) return;
+  const val = input.value.trim();
+  if (!val) {
+    input.style.borderColor = "var(--accent-wrong)";
+    setTimeout(() => input.style.borderColor = "", 400);
+    return;
+  }
+  checkAnswer(val);
+  render();
+}
+
+// ── Start ──
+document.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>
