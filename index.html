@@ -297,6 +297,7 @@ let showParadigm = false;
 
 // Filter state
 let selectedDecl = new Set(["1", "2", "3"]);
+let selectedCases = new Set(["nom", "gen", "dat", "acc", "voc"]);
 let includeArticle = false;
 let settingsOpen = false;
 
@@ -308,6 +309,9 @@ let errorCounts = {};
 
 // Full keyboard mode
 let showFullKeyboard = false;
+
+// Theme
+let darkMode = true;
 
 // ── Init ──
 async function init() {
@@ -331,6 +335,16 @@ function loadStats() {
     if (saved) stats = JSON.parse(saved);
     const savedErrors = localStorage.getItem("greek_trainer_errors");
     if (savedErrors) errorCounts = JSON.parse(savedErrors);
+    const savedSettings = localStorage.getItem("greek_trainer_settings");
+    if (savedSettings) {
+      const s = JSON.parse(savedSettings);
+      if (s.selectedDecl) selectedDecl = new Set(s.selectedDecl);
+      if (s.selectedCases) selectedCases = new Set(s.selectedCases);
+      if (s.includeArticle !== undefined) includeArticle = s.includeArticle;
+      if (s.showFullKeyboard !== undefined) showFullKeyboard = s.showFullKeyboard;
+      if (s.darkMode !== undefined) darkMode = s.darkMode;
+    }
+    applyTheme();
   } catch (e) {}
 }
 
@@ -339,6 +353,22 @@ function saveStats() {
     localStorage.setItem("greek_trainer_stats", JSON.stringify(stats));
     localStorage.setItem("greek_trainer_errors", JSON.stringify(errorCounts));
   } catch (e) {}
+}
+
+function saveSettings() {
+  try {
+    localStorage.setItem("greek_trainer_settings", JSON.stringify({
+      selectedDecl: [...selectedDecl],
+      selectedCases: [...selectedCases],
+      includeArticle,
+      showFullKeyboard,
+      darkMode
+    }));
+  } catch (e) {}
+}
+
+function applyTheme() {
+  document.documentElement.setAttribute("data-theme", darkMode ? "dark" : "light");
 }
 
 function applyFilters() {
@@ -370,7 +400,8 @@ function pickNext() {
   } while (noun === currentNoun && pool.length > 1 && attempts < 10);
 
   currentNoun = noun;
-  currentCase = CASES[Math.floor(Math.random() * CASES.length)];
+  const casesArray = [...selectedCases];
+  currentCase = casesArray[Math.floor(Math.random() * casesArray.length)];
   currentNum = Math.random() < 0.5 ? "sg" : "pl";
   answerState = null;
   showParadigm = false;
@@ -497,6 +528,13 @@ function renderSettings() {
     { id: "2", label: "2. Dekl." },
     { id: "3", label: "3. Dekl." }
   ];
+  const caseChips = [
+    { id: "nom", label: "Nom." },
+    { id: "gen", label: "Gen." },
+    { id: "dat", label: "Dat." },
+    { id: "acc", label: "Akk." },
+    { id: "voc", label: "Vok." }
+  ];
 
   return `
     <div class="settings">
@@ -504,6 +542,12 @@ function renderSettings() {
         <div class="settings__label">Deklinationen</div>
         <div class="chip-group">
           ${declChips.map(d => `<button class="chip ${selectedDecl.has(d.id) ? 'chip--active' : ''}" data-decl="${d.id}">${d.label}</button>`).join("")}
+        </div>
+      </div>
+      <div class="settings__section">
+        <div class="settings__label">Kasus</div>
+        <div class="chip-group">
+          ${caseChips.map(c => `<button class="chip ${selectedCases.has(c.id) ? 'chip--active' : ''}" data-case="${c.id}">${c.label}</button>`).join("")}
         </div>
       </div>
       <div class="settings__section">
@@ -520,6 +564,22 @@ function renderSettings() {
           <div class="toggle ${showFullKeyboard ? 'toggle--on' : ''}" id="toggleKeyboard">
             <div class="toggle__knob"></div>
           </div>
+        </div>
+      </div>
+      <div class="settings__section">
+        <div class="toggle-row">
+          <span class="toggle-row__label">${darkMode ? '🌙 Dunkelmodus' : '☀️ Hellmodus'}</span>
+          <div class="toggle ${darkMode ? 'toggle--on' : ''}" id="toggleTheme">
+            <div class="toggle__knob"></div>
+          </div>
+        </div>
+      </div>
+      <div class="settings__section">
+        <div class="settings__label">Tastenkürzel</div>
+        <div class="shortcuts-info">
+          <kbd>Enter</kbd> Prüfen / Nächstes Wort&ensp;·&ensp;
+          <kbd>Tab</kbd> Überspringen&ensp;·&ensp;
+          <kbd>Esc</kbd> Paradigma ein/aus
         </div>
       </div>
       <div class="settings__section">
@@ -656,17 +716,12 @@ function attachEvents() {
   const settingsBtn = document.getElementById("settingsToggle");
   const toggleArt = document.getElementById("toggleArticle");
   const toggleKbd = document.getElementById("toggleKeyboard");
+  const toggleThm = document.getElementById("toggleTheme");
   const resetBtn = document.getElementById("resetStats");
   const skipBtn = document.getElementById("skipBtn");
 
   if (input && !answerState) {
     input.focus();
-    input.addEventListener("keydown", e => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        doCheck();
-      }
-    });
   }
 
   if (checkBtn) checkBtn.addEventListener("click", doCheck);
@@ -683,7 +738,6 @@ function attachEvents() {
     if (input && !answerState) {
       input.value = currentNoun.lemma;
       input.focus();
-      // Place cursor at the end
       input.setSelectionRange(input.value.length, input.value.length);
     }
   });
@@ -711,23 +765,21 @@ function attachEvents() {
 
   if (toggleArt) toggleArt.addEventListener("click", () => {
     includeArticle = !includeArticle;
-    if (!answerState) {
-      const forms = generateForms(currentNoun);
-      let answer = forms[currentNum][currentCase];
-      if (includeArticle && currentCase !== "voc") {
-        const art = ARTICLES[currentNoun.gender];
-        if (art && art[currentNum] && art[currentNum][currentCase]) {
-          const artForm = art[currentNum][currentCase];
-          if (artForm) answer = artForm + " " + answer;
-        }
-      }
-      correctAnswer = answer;
-    }
+    if (!answerState) recalcAnswer();
+    saveSettings();
     render();
   });
 
   if (toggleKbd) toggleKbd.addEventListener("click", () => {
     showFullKeyboard = !showFullKeyboard;
+    saveSettings();
+    render();
+  });
+
+  if (toggleThm) toggleThm.addEventListener("click", () => {
+    darkMode = !darkMode;
+    applyTheme();
+    saveSettings();
     render();
   });
 
@@ -749,6 +801,22 @@ function attachEvents() {
       }
       applyFilters();
       pickNext();
+      saveSettings();
+      render();
+    });
+  });
+
+  // Case filter chips
+  document.querySelectorAll("[data-case]").forEach(chip => {
+    chip.addEventListener("click", () => {
+      const c = chip.dataset.case;
+      if (selectedCases.has(c)) {
+        if (selectedCases.size > 1) selectedCases.delete(c);
+      } else {
+        selectedCases.add(c);
+      }
+      pickNext();
+      saveSettings();
       render();
     });
   });
@@ -786,18 +854,57 @@ function attachEvents() {
       }
     });
   });
+}
 
-  // Keyboard shortcut: Enter/Space for next after answering
-  if (answerState) {
-    document.addEventListener("keydown", function handler(e) {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        document.removeEventListener("keydown", handler);
-        pickNext();
-        render();
-      }
-    });
+// ── Global keyboard shortcuts (registered once) ──
+document.addEventListener("keydown", e => {
+  // Tab = skip (when not yet answered)
+  if (e.key === "Tab" && !answerState && currentNoun) {
+    e.preventDefault();
+    skipQuestion();
+    render();
+    return;
   }
+  // Esc = toggle paradigm (after answering)
+  if (e.key === "Escape" && answerState) {
+    e.preventDefault();
+    showParadigm = !showParadigm;
+    render();
+    return;
+  }
+  // Enter = check answer (when not answered) or next word (when answered)
+  if (e.key === "Enter") {
+    e.preventDefault();
+    if (!answerState) {
+      doCheck();
+    } else {
+      pickNext();
+      render();
+    }
+    return;
+  }
+  // Space = next word (only after answering, and only if input not focused)
+  if (e.key === " " && answerState) {
+    const active = document.activeElement;
+    if (!active || active.tagName !== "INPUT") {
+      e.preventDefault();
+      pickNext();
+      render();
+    }
+  }
+});
+
+function recalcAnswer() {
+  const forms = generateForms(currentNoun);
+  let answer = forms[currentNum][currentCase];
+  if (includeArticle && currentCase !== "voc") {
+    const art = ARTICLES[currentNoun.gender];
+    if (art && art[currentNum] && art[currentNum][currentCase]) {
+      const artForm = art[currentNum][currentCase];
+      if (artForm) answer = artForm + " " + answer;
+    }
+  }
+  correctAnswer = answer;
 }
 
 function doCheck() {

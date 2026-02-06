@@ -257,8 +257,59 @@ body::before {
   .stats { gap: 6px; }
   .stats__item { padding: 8px 4px; }
   .stats__value { font-size: 1.1rem; }
+  .stats__label { font-size: 0.62rem; }
   .input-field { font-size: 1rem; padding: 10px 12px; }
   .diacritics__btn { padding: 6px 7px; min-width: 30px; font-size: 0.9rem; }
   .keyboard__key { font-size: 0.82rem; max-width: 38px; }
   .keyboard__key--wide { max-width: 90px; padding: 9px 0; }
 }
+
+/* ── Shortcuts Info ── */
+.shortcuts-info {
+  font-size: 0.78rem; color: var(--text-muted); line-height: 1.7;
+}
+.shortcuts-info kbd {
+  display: inline-block; background: var(--bg-input); border: 1px solid var(--border);
+  border-radius: 4px; padding: 1px 6px; font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--text-secondary); margin-right: 3px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   LIGHT THEME
+   ══════════════════════════════════════════════════════════ */
+[data-theme="light"] {
+  --bg-deep: #f5f0e8;
+  --bg-surface: #ede7dd;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8f4ee;
+  --bg-input: #f0ebe3;
+  --border: #d4cdc2;
+  --border-light: #bfb8ad;
+  --text-primary: #2a2420;
+  --text-secondary: #5a5048;
+  --text-muted: #8a8078;
+  --text-greek: #1a1612;
+  --accent-gold: #a07020;
+  --accent-gold-dim: #8a6018;
+  --accent-gold-glow: rgba(160, 112, 32, 0.1);
+  --accent-correct: #2d8a2d;
+  --accent-correct-bg: rgba(45, 138, 45, 0.08);
+  --accent-wrong: #c04040;
+  --accent-wrong-bg: rgba(192, 64, 64, 0.08);
+  --accent-blue: #3070b0;
+  --accent-blue-bg: rgba(48, 112, 176, 0.06);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+[data-theme="light"] body::before {
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(160,112,32,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(140,100,40,0.04) 0%, transparent 50%);
+}
+
+[data-theme="light"] .feedback--partial { background: rgba(160,112,32,0.08); border-color: rgba(160,112,32,0.2); color: #8a6018; }
+[data-theme="light"] .input-field--partial { border-color: #a07020 !important; background: rgba(160,112,32,0.05); }
+[data-theme="light"] .stats__value--partial { color: #8a6018; }
+[data-theme="light"] .card { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+[data-theme="light"] .card::before { background: linear-gradient(135deg, rgba(160,112,32,0.06) 0%, transparent 60%); }

@@ -2,7 +2,7 @@
 
 Eine Progressive Web App zum Üben altgriechischer Substantiv-Deklinationen — offline-fähig, mit Lernmodus und griechischer Bildschirmtastatur.
 
-![Status](https://img.shields.io/badge/Status-v1.0-d4a853) ![Wörter](https://img.shields.io/badge/Wortschatz-122_Substantive-6bbd6b) ![Offline](https://img.shields.io/badge/Offline-fähig-6ba3d4)
+![Status](https://img.shields.io/badge/Status-v1.1-d4a853) ![Wörter](https://img.shields.io/badge/Wortschatz-122_Substantive-6bbd6b) ![Offline](https://img.shields.io/badge/Offline-fähig-6ba3d4)
 
 ---
 
@@ -17,7 +17,7 @@ Eine Progressive Web App zum Üben altgriechischer Substantiv-Deklinationen — 
 
 **Lernmodus** — Fehler-Wörter erscheinen häufiger. Teilrichtige bekommen halbe Fehlerpunkte, komplett falsche volle.
 
-**Griechische Volltastatur** — Zuschaltbar in den Einstellungen. Enthält alle Grundbuchstaben (α–ω), Diakritika-Kombinationen, Leertaste und Backspace. Ideal ohne griechisches Tastaturlayout.
+**Griechische Volltastatur** — Zuschaltbar in den Einstellungen. Enthält alle Grundbuchstaben (α–ω), Diakritika-Kombinationen, Leertaste und Backspace. Ideal ohne griechisches Tastaturlayout. Passt sich dynamisch an die Bildschirmbreite an.
 
 **Diakritika-Leiste** — Kompakte Standardansicht mit den häufigsten Akzenten, Spiritus und Iota subscriptum.
 
@@ -29,9 +29,30 @@ Eine Progressive Web App zum Üben altgriechischer Substantiv-Deklinationen — 
 
 **Artikel optional** — Der bestimmte Artikel (ὁ, ἡ, τό) kann zugeschaltet werden.
 
-**Filter** — Einschränkung auf 1., 2. und/oder 3. Deklination.
+**Filter** — Einschränkung auf 1., 2. und/oder 3. Deklination sowie auf bestimmte Kasus (z.B. nur Genitiv und Dativ üben, Vokativ weglassen).
+
+**Hell-/Dunkelmodus** — Umschaltbar in den Einstellungen. Dunkelmodus mit warmen Pergamenttönen (Standard), Hellmodus mit hellen Cremetönen.
 
 **Statistik** — Richtig, Teilrichtig (Betonung), Falsch, Serie, Quote, Übersprungen.
+
+**Einstellungen werden gespeichert** — Alle Filter, Tastatur-Modus und Theme bleiben über Sessions hinweg erhalten (localStorage).
+
+---
+
+## Tastaturbedienung
+
+Die App lässt sich komplett per Tastatur bedienen:
+
+| Taste | Funktion |
+|---|---|
+| `Enter` | Antwort prüfen · Nach Antwort: nächstes Wort |
+| `Tab` | Frage überspringen |
+| `Esc` | Paradigma-Tabelle ein-/ausblenden (nach Antwort) |
+| `Leertaste` | Nächstes Wort (nach Antwort, wenn Eingabefeld nicht fokussiert) |
+
+Die Kürzel sind auch innerhalb der App unter **Einstellungen → Tastenkürzel** aufgelistet.
+
+> **Tipp:** Wer kein griechisches Tastaturlayout installiert hat, kann die **Griechische Volltastatur** in den Einstellungen aktivieren und per Maus/Touch tippen.
 
 ---
 
@@ -79,7 +100,7 @@ npx serve .
 
 ### Auf einem Webserver
 
-Alle vier Dateien in ein Verzeichnis kopieren:
+Alle Dateien in ein Verzeichnis kopieren:
 
 ```
 greek-trainer/
@@ -140,10 +161,10 @@ Neue Wörter werden in `nouns.json` ergänzt. Jeder Eintrag hat folgendes Format
 ## Technologie
 
 - **Vanilla JavaScript** — kein Framework, keine Build-Tools
-- **CSS Custom Properties** — durchgängiges Dark-Theme
+- **CSS Custom Properties** — Hell- und Dunkelmodus über `data-theme`-Attribut
 - **Google Fonts** — Literata (Body), Noto Serif (Griechisch), JetBrains Mono (Statistik)
 - **PWA-Manifest** — installierbar auf mobilen Geräten
-- **localStorage** — Statistik und Lernfortschritt bleiben erhalten
+- **localStorage** — Statistik, Lernfortschritt und Einstellungen bleiben erhalten
 
 ---
 
@@ -152,7 +173,7 @@ Neue Wörter werden in `nouns.json` ergänzt. Jeder Eintrag hat folgendes Format
 | Datei | Beschreibung |
 |---|---|
 | `index.html` | Hauptseite mit Quiz-Logik (Vanilla JS) |
-| `style.css` | Stylesheet (dunkles Pergament-Design) |
+| `style.css` | Stylesheet (Hell-/Dunkelmodus, Pergament-Design) |
 | `nouns.json` | Wortschatz mit 122 × 10 expliziten Formen |
 | `manifest.json` | PWA-Manifest |
 | `icon.svg` | App-Icon (Säule mit Ω) |
