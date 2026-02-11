@@ -1,4 +1,4 @@
-# UX-Optimierungsplan: Altgriechisch Deklinationstrainer
+ UX-Optimierungsplan: Altgriechisch Deklinationstrainer
 
 ## Problem
 Die App funktioniert inhaltlich gut, hat aber mehrere UX-Schwächen: volles DOM-Rerendering bei jeder Interaktion (Focus-Verlust, Flackern), fehlendes visuelles Feedback, mobile Schwächen, fehlende Accessibility und wenig Motivation/Gamification-Elemente.
