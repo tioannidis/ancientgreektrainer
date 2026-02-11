@@ -313,6 +313,9 @@ let showFullKeyboard = false;
 // Theme
 let darkMode = true;
 
+// Card transition flag (used to add entry animation on new questions)
+let cardEntering = false;
+
 // ── Init ──
 async function init() {
   try {
@@ -382,6 +385,9 @@ function applyFilters() {
 // ── Pick next question (learning mode: weight errors) ──
 function pickNext() {
   if (filteredNouns.length === 0) return;
+
+  // Trigger card enter animation for the next question
+  cardEntering = true;
 
   // Build weighted pool: nouns with errors appear more often
   const pool = [];
@@ -482,12 +488,51 @@ function skipQuestion() {
 // RENDERING
 // ═══════════════════════════════════════════════════════════
 
+let _preservedFocus = null;
+
+function saveFocusState() {
+  const active = document.activeElement;
+  _preservedFocus = null;
+  if (!active) return;
+  if (active.id === "answerInput") {
+    _preservedFocus = {
+      id: "answerInput",
+      value: active.value,
+      start: active.selectionStart,
+      end: active.selectionEnd,
+      lemma: currentNoun ? currentNoun.lemma : null
+    };
+  }
+}
+
+function restoreFocusState() {
+  const input = document.getElementById("answerInput");
+  if (!input) return;
+  if (_preservedFocus && _preservedFocus.lemma && currentNoun && _preservedFocus.lemma === currentNoun.lemma) {
+    input.value = _preservedFocus.value || "";
+    // Do not steal focus when settings panel is open
+    if (!settingsOpen) {
+      input.focus();
+      try { input.setSelectionRange(_preservedFocus.start, _preservedFocus.end); } catch (e) {}
+    }
+  } else {
+    // New question or nothing preserved: clear input and focus when appropriate
+    input.value = "";
+    if (!answerState && !settingsOpen) input.focus();
+  }
+  _preservedFocus = null;
+}
+
 function render() {
+  // Preserve selection/focus so UI interactions don't disrupt typing
+  saveFocusState();
   if (!currentNoun) pickNext();
   const app = document.getElementById("app");
   app.innerHTML = renderHeader() + renderStats() + renderSettingsToggle() +
     (settingsOpen ? renderSettings() : "") + renderCard();
   attachEvents();
+  // Restore focus/selection after DOM rebuilt and event handlers attached
+  restoreFocusState();
 }
 
 function renderHeader() {
@@ -603,7 +648,7 @@ function renderCard() {
   const articleHint = includeArticle && currentCase !== "voc" ? " (mit Artikel)" : "";
 
   let html = `
-    <div class="card">
+    <div class="card${cardEntering ? ' card--enter' : ''}">
       <div class="card__badge">${declLabel} · ${GENDER_NAMES[noun.gender]}</div>
       <div class="card__word-row">
         <div class="card__word"><span class="card__article">${genderArt}</span>${noun.lemma}</div>
@@ -720,7 +765,7 @@ function attachEvents() {
   const resetBtn = document.getElementById("resetStats");
   const skipBtn = document.getElementById("skipBtn");
 
-  if (input && !answerState) {
+  if (input && !answerState && !settingsOpen) {
     input.focus();
   }
 
@@ -799,8 +844,8 @@ function attachEvents() {
       } else {
         selectedDecl.add(d);
       }
+      // Apply filters but keep the current question; changes take effect on next word
       applyFilters();
-      pickNext();
       saveSettings();
       render();
     });
@@ -815,7 +860,7 @@ function attachEvents() {
       } else {
         selectedCases.add(c);
       }
-      pickNext();
+      // Do not advance to the next question immediately; new filters apply on next pick
       saveSettings();
       render();
     });
