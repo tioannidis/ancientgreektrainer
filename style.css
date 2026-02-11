@@ -182,8 +182,39 @@ body::before {
 /* ── Feedback ── */
 .feedback { border-radius: var(--radius); padding: 12px 14px; margin-top: 12px; font-size: 0.88rem; line-height: 1.5; animation: fadeIn 0.2s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-.feedback--correct { background: var(--accent-correct-bg); border: 1px solid rgba(107,189,107,0.25); color: var(--accent-correct); }
-.feedback--wrong { background: var(--accent-wrong-bg); border: 1px solid rgba(212,107,107,0.25); color: var(--accent-wrong); }
+
+/* Feedback animations */
+@keyframes feedbackPulse {
+  0% { transform: scale(0.985); opacity: 0.95; }
+  50% { transform: scale(1.03); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes feedbackShake {
+  10% { transform: translateX(-6px); }
+  30% { transform: translateX(6px); }
+  50% { transform: translateX(-4px); }
+  70% { transform: translateX(4px); }
+  90% { transform: translateX(0); }
+}
+
+.feedback--correct {
+  background: var(--accent-correct-bg);
+  border: 1px solid rgba(107,189,107,0.25);
+  color: var(--accent-correct);
+  animation: feedbackPulse 540ms cubic-bezier(.2,.9,.2,1);
+}
+.feedback--partial {
+  background: var(--feedback--partial-bg, rgba(212,168,83,0.1));
+  border: 1px solid rgba(212,168,83,0.25);
+  color: #d4a853;
+  animation: feedbackPulse 420ms ease;
+}
+.feedback--wrong {
+  background: var(--accent-wrong-bg);
+  border: 1px solid rgba(212,107,107,0.25);
+  color: var(--accent-wrong);
+  animation: feedbackShake 420ms cubic-bezier(.36,.07,.19,.97);
+}
 .feedback__answer { font-family: var(--font-greek); font-weight: 700; font-size: 1rem; }
 
 /* ── Paradigm Table ── */
@@ -313,3 +344,13 @@ body::before {
 [data-theme="light"] .stats__value--partial { color: #8a6018; }
 [data-theme="light"] .card { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 [data-theme="light"] .card::before { background: linear-gradient(135deg, rgba(160,112,32,0.06) 0%, transparent 60%); }
+
+/* Card entry animation for new questions */
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.995); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.card--enter { animation: cardIn 300ms cubic-bezier(.2,.9,.2,1); }
+
+/* Slight elevation during animation to emphasize change */
+.card--enter { box-shadow: 0 8px 20px rgba(0,0,0,0.28); }
