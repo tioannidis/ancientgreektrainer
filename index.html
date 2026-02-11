@@ -878,6 +878,17 @@ function attachEvents() {
         input.setSelectionRange(pos + btn.dataset.char.length, pos + btn.dataset.char.length);
       }
     });
+    // Visual press feedback for pointer devices: add/remove class on pointer events
+    btn.addEventListener("pointerdown", (ev) => {
+      btn.classList.add("is-pressed");
+      try { btn.setPointerCapture && btn.setPointerCapture(ev.pointerId); } catch (e) {}
+    });
+    btn.addEventListener("pointerup", (ev) => {
+      btn.classList.remove("is-pressed");
+      try { btn.releasePointerCapture && btn.releasePointerCapture(ev.pointerId); } catch (e) {}
+    });
+    btn.addEventListener("pointercancel", () => btn.classList.remove("is-pressed"));
+    btn.addEventListener("pointerleave", () => btn.classList.remove("is-pressed"));
   });
 
   // Special keyboard actions (space, backspace)

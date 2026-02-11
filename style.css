@@ -264,6 +264,19 @@ body::before {
 }
 .keyboard__key:hover { background: var(--bg-card-hover); border-color: var(--border-light); color: var(--text-primary); }
 .keyboard__key:active { transform: scale(0.9); background: var(--accent-gold-glow); }
+
+/* Smooth press feedback for diacritics and keyboard keys */
+.diacritics__btn, .keyboard__key {
+  transition: transform 120ms ease, background 120ms ease, color 120ms ease;
+}
+.diacritics__btn:active, .keyboard__key:active { transform: translateY(1px) scale(0.985); }
+.diacritics__btn.is-pressed, .keyboard__key.is-pressed {
+  transform: translateY(1px) scale(0.985);
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+  box-shadow: inset 0 1px 0 rgba(0,0,0,0.06);
+}
+
 .keyboard__key--wide { flex: 2.5 1 0; max-width: 120px; aspect-ratio: auto; padding: 10px 0; font-size: clamp(0.78rem, 2vw, 0.9rem); }
 
 /* ── Skipped & Partial states ── */
