@@ -61,3 +61,54 @@ Schrittweise Verbesserung der UX in 6 Kategorien, von kritisch (DOM-Rerendering)
 ## Risiken
 - Phase 3.4 (Swipe) könnte Scroll-Konflikte verursachen → nur implementieren wenn sauber machbar
 - Phase 5.3 (Fortschritt) erfordert Tracking welche Wörter bereits geübt wurden → neuer localStorage-Key
+
+---
+
+# Android-App (Flutter) – Plan
+
+## Ziel
+Native Android-App für den Deklinationstrainer, Flutter-Projekt im Unterordner `flutter/`. Die PWA im Root bleibt unverändert. Umfang: komplette Settings-Seite inkl. Dark Mode, Logik aus `index.html` nach Dart portiert.
+
+## Voraussetzungen
+- [ ] **V.1 Flutter SDK** – Auf diesem Mac nicht installiert (`flutter` nicht im PATH). Installation z. B. über `brew install --cask flutter`
+- [ ] **V.2 Android SDK** – `~/Library/Android` ist ein Symlink auf `/Volumes/SSD/Android`. Vorhandensein des Ziels ist noch ungeprüft.
+- [ ] **V.3 Java** – `openjdk 25` vorhanden. Für AGP 8.x ist Java 17 das sichere Target.
+
+## Entscheidungen
+- Application-ID: offen (Vorschlag `com.theo.ancientgreektrainer`)
+- Verteilung: offen (F-Droid mit fastlane-Metadaten wie TipsplitAndroid, oder nur APK)
+- `nouns.json` wird als Asset in die App kopiert. Die Root-Datei bleibt Quelle der PWA, Synchronisation erfolgt manuell.
+
+## Workplan
+
+### Phase A: Projektgerüst
+- [ ] **A.1 Projekt anlegen** – `flutter create` im Unterordner `flutter/`, Application-ID setzen
+- [ ] **A.2 Daten einbinden** – `nouns.json` nach `flutter/assets/` kopieren und in `pubspec.yaml` eintragen
+
+### Phase B: Domänenlogik (ohne UI-Abhängigkeiten)
+- [ ] **B.1 Modelle** – `Noun` mit Typ, Genus, Stamm, Formen; Parsing aus `nouns.json`
+- [ ] **B.2 Filter** – Deklinationsfilter analog `applyFilters` (`index.html:377`), Fallback auf alle Wörter bei leerer Auswahl
+- [ ] **B.3 Fragenauswahl** – Fehlergewichtung analog `pickNext` (`index.html:386`)
+- [ ] **B.4 Antwortprüfung** – Richtig / Teilweise / Falsch inklusive Akzent- und Artikelbehandlung wie in der PWA
+- [ ] **B.5 Stats** – Richtig, Falsch, Streak, bestStreak, Skipped, Fehlerzähler pro Wort
+
+### Phase C: Persistenz
+- [ ] **C.1 shared_preferences** – Settings und Stats speichern, Keys an die PWA angelehnt (`greek_trainer_settings`, `greek_trainer_stats`, `greek_trainer_errors`)
+- [ ] **C.2 Laden beim Start** – Defaults wie in der PWA (`darkMode = true`, alle Deklinationen und Kasus aktiv)
+
+### Phase D: Theme und Settings
+- [ ] **D.1 Theme** – `ThemeMode` mit Dunkel (Default), Hell und System. Farben aus `style.css` als `ThemeData` übernehmen
+- [ ] **D.2 Settings-Seite** – Alle Punkte aus `index.html:580–633`: Deklination, Kasus, Artikel abfragen, griechische Volltastatur, Dark Mode, Tastenkürzel-Info, Statistik zurücksetzen (mit Bestätigung)
+- [ ] **D.3 Hauptscreen** – Frage, Eingabe, griechische Zeichen-Buttons, Feedback, Stats-Leiste
+
+### Phase E: Tests und Verifikation
+- [ ] **E.1 Unit-Tests** – Filter, Fragenauswahl, Antwortprüfung (inkl. Unicode/Akzente)
+- [ ] **E.2 Widget-Tests** – Settings-Toggle, Theme-Wechsel, Eingabe und Feedback
+- [ ] **E.3 Analyse** – `flutter analyze` ohne Fehler
+- [ ] **E.4 Tests** – `flutter test` grün
+- [ ] **E.5 Build** – `flutter build apk --debug`
+- [ ] **E.6 Gerätetest** – Theme und Einstellungen überleben einen Neustart
+
+## Risiken
+- Doppelte Pflege der Logik (PWA und Flutter). Abweichungen sind möglich, deshalb Unit-Tests gegen dieselben Beispielfälle aus `nouns.json`.
+- Akzent- und Artikelprüfung muss exakt dem Verhalten der PWA entsprechen, sonst entstehen unterschiedliche Ergebnisse je nach Plattform.
