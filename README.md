@@ -180,6 +180,10 @@ Neue Wörter werden in `nouns.json` ergänzt. Jeder Eintrag hat folgendes Format
 
 ---
 
-## Lizenz
+## License
 
-Frei verwendbar für Lernzwecke. Der Wortschatz basiert auf dem Standardvokabular klassischer Lehrbücher.
+Copyright (C) Ancient Greek Trainer contributors.
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. See [LICENSE](https://github.com/tioannidis/ancientgreektrainer/blob/main/LICENSE).
+
+Der Wortschatz basiert auf dem Standardvokabular klassischer Lehrbücher.
