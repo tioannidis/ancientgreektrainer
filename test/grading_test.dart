@@ -28,7 +28,7 @@ void main() {
 
     test('nur Akzente abweichend ist partial', () {
       expect(grade('ψυχης', 'ψυχῆς'), GradeResult.partial);
-      expect(grade('ψύχη', 'ψυχῆς'), GradeResult.partial);
+      expect(grade('ψυχής', 'ψυχῆς'), GradeResult.partial);
     });
 
     test('Großschreibung allein ist partial (Akzent fehlt nach lowercase-Vergleich)', () {

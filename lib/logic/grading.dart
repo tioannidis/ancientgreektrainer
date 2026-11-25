@@ -1,7 +1,23 @@
 enum GradeResult { correct, partial, wrong }
 
+String _lowerCase(String s) {
+  final buf = StringBuffer();
+  for (var i = 0; i < s.length; i++) {
+    final ch = s[i];
+    if (ch == 'Σ') {
+      final next = i + 1 < s.length ? s[i + 1] : '';
+      final nextIsLetter =
+          next.isNotEmpty && next.toLowerCase() != next.toUpperCase();
+      buf.write(nextIsLetter ? 'σ' : 'ς');
+    } else {
+      buf.write(ch.toLowerCase());
+    }
+  }
+  return buf.toString();
+}
+
 String normalize(String s) =>
-    s.trim().toLowerCase().replaceAll(RegExp(r'\s+'), ' ');
+    _lowerCase(s.trim()).replaceAll(RegExp(r'\s+'), ' ');
 
 String stripAccents(String s) {
   final buf = StringBuffer();
@@ -11,7 +27,7 @@ String stripAccents(String s) {
     final mapped = _greekBase[ch];
     buf.write(mapped ?? ch);
   }
-  return buf.toString().toLowerCase().replaceAll(RegExp(r'\s+'), ' ').trim();
+  return _lowerCase(buf.toString()).replaceAll(RegExp(r'\s+'), ' ').trim();
 }
 
 GradeResult grade(String input, String correctAnswer) {

@@ -335,12 +335,14 @@ class QuizPageState extends State<QuizPage> {
               'Bilde den ${caseNamesDe[q.gramCase]} ${numNamesDe[q.number]}$articleHint:',
               style: const TextStyle(fontSize: 16),
             ),
-            const SizedBox(height: 8),
-            GreekKeyboardPad(
-              full: widget.settings.showFullKeyboard,
-              onInsert: _insert,
-              onBackspace: _backspace,
-            ),
+            if (!answered) ...[
+              const SizedBox(height: 8),
+              GreekKeyboardPad(
+                full: widget.settings.showFullKeyboard,
+                onInsert: _insert,
+                onBackspace: _backspace,
+              ),
+            ],
             const SizedBox(height: 8),
             Row(
               children: [

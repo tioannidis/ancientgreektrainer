@@ -43,6 +43,7 @@ class TrainerApp extends StatefulWidget {
 
 class TrainerAppState extends State<TrainerApp> {
   late AppSettings settings;
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   final GlobalKey<QuizPageState> quizKey = GlobalKey<QuizPageState>();
 
   @override
@@ -52,7 +53,9 @@ class TrainerAppState extends State<TrainerApp> {
   }
 
   void _openSettings() {
-    Navigator.of(context)
+    final nav = navigatorKey.currentState;
+    if (nav == null) return;
+    nav
         .push(
           MaterialPageRoute(
             builder: (_) => SettingsPage(
@@ -75,6 +78,7 @@ class TrainerAppState extends State<TrainerApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Ancient Greek Trainer',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light(),
