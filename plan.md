@@ -67,7 +67,7 @@ Schrittweise Verbesserung der UX in 6 Kategorien, von kritisch (DOM-Rerendering)
 # Android-App (Flutter) – Plan
 
 ## Ziel
-Native Android-App für den Deklinationstrainer, Flutter-Projekt im Unterordner `flutter/`. Die PWA im Root bleibt unverändert. Umfang: komplette Settings-Seite inkl. Dark Mode, Logik aus `index.html` nach Dart portiert.
+Native Android-App für den Deklinationstrainer, Flutter-Projekt im Repo-Root. Die PWA wurde entfernt und durch die Flutter-App ersetzt. Umfang: komplette Settings-Seite inkl. Dark Mode, Logik aus der ursprünglichen `index.html` nach Dart portiert.
 
 ## Voraussetzungen
 - [ ] **V.1 Flutter SDK** – Auf diesem Mac nicht installiert (`flutter` nicht im PATH). Installation z. B. über `brew install --cask flutter`
@@ -82,8 +82,8 @@ Native Android-App für den Deklinationstrainer, Flutter-Projekt im Unterordner 
 ## Workplan
 
 ### Phase A: Projektgerüst
-- [x] **A.1 Projekt anlegen** – `flutter create` im Unterordner `flutter/`, Application-ID setzen
-- [x] **A.2 Daten einbinden** – `nouns.json` nach `flutter/assets/` kopieren und in `pubspec.yaml` eintragen
+- [x] **A.1 Projekt anlegen** – `flutter create` im Repo-Root, Application-ID setzen
+- [x] **A.2 Daten einbinden** – `nouns.json` nach `assets/` kopieren und in `pubspec.yaml` eintragen
 
 ### Phase B: Domänenlogik (ohne UI-Abhängigkeiten)
 - [x] **B.1 Modelle** – `Noun` mit Typ, Genus, Stamm, Formen; Parsing aus `nouns.json`

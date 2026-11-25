@@ -11,6 +11,12 @@ build/
 *.aab
 local.properties
 
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+*.iml
+
 # OS
 .DS_Store
 Thumbs.db
