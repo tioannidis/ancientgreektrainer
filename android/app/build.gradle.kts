@@ -28,7 +28,7 @@ android {
 
     buildTypes {
         release {
-            signingConfig = signingConfig.getByName("debug")
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 }
