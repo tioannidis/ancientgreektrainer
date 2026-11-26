@@ -13,14 +13,15 @@ NounCatalog loadCatalog() => NounCatalog.fromJson(
           as Map<String, dynamic>,
     );
 
-Future<TrainerApp> buildApp() async {
+Future<TrainerApp> buildApp({String language = 'de'}) async {
   SharedPreferences.setMockInitialValues({});
   final prefs = await SharedPreferences.getInstance();
   final service = PrefsService(prefs);
   return TrainerApp(
     service: service,
-    settings: service.loadSettings(),
+    settings: service.loadSettings()..language = language,
     catalog: loadCatalog(),
+    appVersion: '1.0.0',
   );
 }
 
@@ -31,6 +32,7 @@ void main() {
     await tester.pumpWidget(await buildApp());
     await tester.pumpAndSettle();
     expect(find.text('Deklinationstrainer'), findsOneWidget);
+    expect(find.textContaining('v1.0.0'), findsOneWidget);
     expect(find.byType(TextField), findsOneWidget);
     expect(find.text('Prüfen'), findsOneWidget);
     expect(find.text('Überspringen »'), findsOneWidget);
@@ -61,9 +63,34 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Hell'));
     await tester.pumpAndSettle();
-    await tester.pageBack();
+    await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
     expect(find.text('Deklinationstrainer'), findsOneWidget);
+  });
+
+  testWidgets('Systemsprache ist die Vorauswahl', (tester) async {
+    tester.platformDispatcher.localesTestValue = const [Locale('en', 'US')];
+    addTearDown(tester.platformDispatcher.clearLocalesTestValue);
+    await tester.pumpWidget(await buildApp(language: 'system'));
+    await tester.pumpAndSettle();
+    expect(find.text('Declension Trainer'), findsOneWidget);
+    expect(find.text('Check'), findsOneWidget);
+  });
+
+  testWidgets('Englische Lokalisierung', (tester) async {
+    await tester.pumpWidget(await buildApp(language: 'en'));
+    await tester.pumpAndSettle();
+    expect(find.text('Declension Trainer'), findsOneWidget);
+    expect(find.text('Check'), findsOneWidget);
+    expect(find.text('Skip »'), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.settings));
+    await tester.pumpAndSettle();
+    expect(find.text('Language'), findsOneWidget);
+    expect(find.text('Ask for article'), findsOneWidget);
+    expect(find.text('English'), findsOneWidget);
+    await tester.tap(find.text('Light'));
+    await tester.pumpAndSettle();
+    expect(find.text('Settings'), findsWidgets);
   });
 
   testWidgets('Statistik zurücksetzen verlangt Bestätigung', (tester) async {
@@ -71,6 +98,14 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(Icons.settings));
     await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.text('Statistik zurücksetzen'),
+      200,
+      scrollable: find.descendant(
+        of: find.byType(ListView),
+        matching: find.byType(Scrollable),
+      ),
+    );
     await tester.tap(find.text('Statistik zurücksetzen'));
     await tester.pumpAndSettle();
     expect(find.text('Statistik zurücksetzen?'), findsOneWidget);

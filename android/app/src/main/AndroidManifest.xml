@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
         android:label="Ancient Greek Trainer"
+        android:localeConfig="@xml/locales_config"
         android:name="${applicationName}">
         <activity
             android:name=".MainActivity"

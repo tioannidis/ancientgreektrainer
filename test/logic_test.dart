@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:ancientgreektrainer/l10n/languages.dart';
 import 'package:ancientgreektrainer/logic/filters.dart';
 import 'package:ancientgreektrainer/logic/grading.dart';
 import 'package:ancientgreektrainer/logic/picker.dart';
 import 'package:ancientgreektrainer/logic/stats.dart';
 import 'package:ancientgreektrainer/models/noun.dart';
+import 'package:ancientgreektrainer/settings/app_settings.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 NounCatalog loadCatalog() => NounCatalog.fromJson(
@@ -121,6 +123,25 @@ void main() {
         expect(identical(q.noun, prev), isFalse);
         prev = q.noun;
       }
+    });
+  });
+
+  group('settings', () {
+    test('Sprache ist standardmäßig System und wird gespeichert', () {
+      final s = AppSettings();
+      expect(s.language, systemLanguageCode);
+      expect(s.locale, isNull);
+
+      s.language = 'en';
+      final back = AppSettings.fromJson(s.toJson());
+      expect(back.language, 'en');
+      expect(back.locale?.languageCode, 'en');
+    });
+
+    test('unbekannte Sprache fällt auf System zurück', () {
+      final back = AppSettings.fromJson({'language': 'fr'});
+      expect(back.language, systemLanguageCode);
+      expect(back.locale, isNull);
     });
   });
 

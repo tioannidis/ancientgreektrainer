@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../l10n/generated/app_localizations.dart';
+import '../l10n/grammar_labels.dart';
 import '../logic/filters.dart';
 import '../logic/grading.dart';
 import '../logic/picker.dart';
@@ -16,6 +18,7 @@ class QuizPage extends StatefulWidget {
   final PrefsService prefs;
   final AppSettings settings;
   final VoidCallback onOpenSettings;
+  final String appVersion;
 
   const QuizPage({
     super.key,
@@ -23,6 +26,7 @@ class QuizPage extends StatefulWidget {
     required this.prefs,
     required this.settings,
     required this.onOpenSettings,
+    required this.appVersion,
   });
 
   @override
@@ -180,6 +184,7 @@ class QuizPageState extends State<QuizPage> {
 
   Widget _statsBar(ColorScheme cs) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context);
     return Card(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -188,12 +193,12 @@ class QuizPageState extends State<QuizPage> {
           spacing: 12,
           runSpacing: 4,
           children: [
-            _statItem('${stats.correct}', 'Richtig', isDark ? AppTheme.correctDark : AppTheme.correctLight),
-            _statItem('${stats.partial}', 'Betonung', isDark ? AppTheme.goldDark : AppTheme.goldLight),
-            _statItem('${stats.wrong}', 'Falsch', isDark ? AppTheme.wrongDark : AppTheme.wrongLight),
-            _statItem('${stats.streak}', 'Serie', isDark ? AppTheme.blueDark : AppTheme.blueLight),
-            _statItem('${stats.pct}%', 'Quote', cs.onSurface),
-            if (stats.skipped > 0) _statItem('${stats.skipped}', 'Übersprg.', cs.onSurfaceVariant),
+            _statItem('${stats.correct}', l10n.statsCorrect, isDark ? AppTheme.correctDark : AppTheme.correctLight),
+            _statItem('${stats.partial}', l10n.statsPartial, isDark ? AppTheme.goldDark : AppTheme.goldLight),
+            _statItem('${stats.wrong}', l10n.statsWrong, isDark ? AppTheme.wrongDark : AppTheme.wrongLight),
+            _statItem('${stats.streak}', l10n.statsStreak, isDark ? AppTheme.blueDark : AppTheme.blueLight),
+            _statItem('${stats.pct}%', l10n.statsAccuracy, cs.onSurface),
+            if (stats.skipped > 0) _statItem('${stats.skipped}', l10n.statsSkipped, cs.onSurfaceVariant),
           ],
         ),
       ),
@@ -204,21 +209,22 @@ class QuizPageState extends State<QuizPage> {
     final q = question;
     if (q == null) return const SizedBox.shrink();
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context);
     if (gradeResult == GradeResult.correct) {
-      return _feedbackBox('✓ Richtig! ${q.correctAnswer}',
+      return _feedbackBox(l10n.feedbackCorrect(q.correctAnswer),
           isDark ? AppTheme.correctDark : AppTheme.correctLight);
     }
     if (gradeResult == GradeResult.partial) {
-      return _feedbackBox(
-          '◐ Fast! Richtige Deklination, aber die Betonung stimmt nicht.\nKorrekt: ${q.correctAnswer}',
+      return _feedbackBox(l10n.feedbackPartial(q.correctAnswer),
           isDark ? AppTheme.goldDark : AppTheme.goldLight);
     }
     if (gradeResult == GradeResult.wrong) {
-      return _feedbackBox('✗ Leider falsch. Richtig wäre: ${q.correctAnswer}',
+      return _feedbackBox(l10n.feedbackWrong(q.correctAnswer),
           isDark ? AppTheme.wrongDark : AppTheme.wrongLight);
     }
     if (skipped) {
-      return _feedbackBox('» Übersprungen. Die Antwort wäre: ${q.correctAnswer}', cs.onSurfaceVariant);
+      return _feedbackBox(
+          l10n.feedbackSkipped(q.correctAnswer), cs.onSurfaceVariant);
     }
     return const SizedBox.shrink();
   }
@@ -239,6 +245,7 @@ class QuizPageState extends State<QuizPage> {
   Widget _paradigm(Question q) {
     final cs = Theme.of(context).colorScheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context);
     final gold = isDark ? AppTheme.goldDark : AppTheme.goldLight;
     final art = widget.catalog.articles;
     TableRow row(GramCase c) {
@@ -255,7 +262,7 @@ class QuizPageState extends State<QuizPage> {
         children: [
           Padding(
             padding: const EdgeInsets.all(4),
-            child: Text('${caseNamesDe[c]!.substring(0, 3)}.'),
+            child: Text(caseAbbr(l10n, c)),
           ),
           Padding(
             padding: const EdgeInsets.all(4),
@@ -279,13 +286,13 @@ class QuizPageState extends State<QuizPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 12),
-        Text('Vollständiges Paradigma', style: TextStyle(fontWeight: FontWeight.bold, color: cs.onSurface)),
+        Text(l10n.fullParadigm, style: TextStyle(fontWeight: FontWeight.bold, color: cs.onSurface)),
         const SizedBox(height: 4),
         Table(
           columnWidths: const {0: IntrinsicColumnWidth(), 1: FlexColumnWidth(), 2: FlexColumnWidth()},
           children: [
             TableRow(
-              children: ['', 'Singular', 'Plural']
+              children: ['', l10n.singular, l10n.plural]
                   .map((h) => Padding(
                         padding: const EdgeInsets.all(4),
                         child: Text(h, style: const TextStyle(fontWeight: FontWeight.bold)),
@@ -301,17 +308,20 @@ class QuizPageState extends State<QuizPage> {
 
   Widget _card(BuildContext context, Question q) {
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context);
+    final languageCode = Localizations.localeOf(context).languageCode;
     final noun = q.noun;
-    final declLabel = declLabels[noun.type] ?? noun.type;
-    final articleHint =
-        widget.settings.includeArticle && q.gramCase != GramCase.voc ? ' (mit Artikel)' : '';
+    final declLabel = declensionLabel(l10n, noun.type);
+    final articleHint = widget.settings.includeArticle && q.gramCase != GramCase.voc
+        ? l10n.withArticleSuffix
+        : '';
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('$declLabel · ${genderNamesDe[noun.gender]}',
+            Text('$declLabel · ${genderName(l10n, noun.gender)}',
                 style: TextStyle(color: cs.onSurfaceVariant, fontSize: 13)),
             const SizedBox(height: 8),
             Row(
@@ -323,16 +333,21 @@ class QuizPageState extends State<QuizPage> {
                   ),
                 ),
                 IconButton(
-                  tooltip: 'Lemma einfügen',
+                  tooltip: l10n.insertLemma,
                   icon: const Icon(Icons.copy),
                   onPressed: answered ? null : () => setState(() => input.text = noun.lemma),
                 ),
               ],
             ),
-            Text('»${noun.meaning}«', style: TextStyle(color: cs.onSurfaceVariant)),
+            Text('»${noun.meaningFor(languageCode)}«',
+                style: TextStyle(color: cs.onSurfaceVariant)),
             const SizedBox(height: 12),
             Text(
-              'Bilde den ${caseNamesDe[q.gramCase]} ${numNamesDe[q.number]}$articleHint:',
+              l10n.buildForm(
+                numberName(l10n, q.number),
+                articleHint,
+                caseName(l10n, q.gramCase),
+              ),
               style: const TextStyle(fontSize: 16),
             ),
             if (!answered) ...[
@@ -353,20 +368,20 @@ class QuizPageState extends State<QuizPage> {
                     readOnly: answered,
                     autocorrect: false,
                     enableSuggestions: false,
-                    decoration: const InputDecoration(hintText: 'Deine Antwort…'),
+                    decoration: InputDecoration(hintText: l10n.answerHint),
                     onSubmitted: (_) => answered ? _next() : _check(),
                   ),
                 ),
                 const SizedBox(width: 8),
                 if (!answered)
-                  FilledButton(onPressed: _check, child: const Text('Prüfen')),
+                  FilledButton(onPressed: _check, child: Text(l10n.check)),
               ],
             ),
             if (!answered) ...[
               const SizedBox(height: 8),
               Align(
                 alignment: Alignment.centerRight,
-                child: TextButton(onPressed: _skip, child: const Text('Überspringen »')),
+                child: TextButton(onPressed: _skip, child: Text(l10n.skip)),
               ),
             ],
             if (answered) ...[
@@ -378,14 +393,14 @@ class QuizPageState extends State<QuizPage> {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () => setState(() => showParadigm = !showParadigm),
-                      child: Text(showParadigm ? 'Tabelle ausblenden' : 'Ganze Deklination'),
+                      child: Text(showParadigm ? l10n.hideTable : l10n.fullDeclension),
                     ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: FilledButton(
                       onPressed: _next,
-                      child: const Text('Nächstes Wort →'),
+                      child: Text(l10n.nextWord),
                     ),
                   ),
                 ],
@@ -401,6 +416,7 @@ class QuizPageState extends State<QuizPage> {
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+    final l10n = AppLocalizations.of(context);
     final q = question;
     return Focus(
       focusNode: keysFocus,
@@ -411,9 +427,9 @@ class QuizPageState extends State<QuizPage> {
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Deklinationstrainer', style: TextStyle(fontSize: 18)),
+              Text(l10n.appTitle, style: const TextStyle(fontSize: 18)),
               Text(
-                'Altgriechisch · ${filtered.length} Substantive v.1.0',
+                l10n.appSubtitle(filtered.length, widget.appVersion),
                 style: TextStyle(fontSize: 12, color: cs.onSurfaceVariant),
               ),
             ],
@@ -421,7 +437,7 @@ class QuizPageState extends State<QuizPage> {
           actions: [
             IconButton(
               icon: const Icon(Icons.settings),
-              tooltip: 'Einstellungen',
+              tooltip: l10n.settingsTooltip,
               onPressed: widget.onOpenSettings,
             ),
           ],

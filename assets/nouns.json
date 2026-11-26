@@ -74,7 +74,10 @@
       "lemma": "ψυχή",
       "gender": "f",
       "type": "1_eta",
-      "meaning": "Seele",
+      "meanings": {
+        "de": "Seele",
+        "en": "soul"
+      },
       "forms": {
         "sg": {
           "nom": "ψυχή",
@@ -96,7 +99,10 @@
       "lemma": "ἀρχή",
       "gender": "f",
       "type": "1_eta",
-      "meaning": "Anfang, Herrschaft",
+      "meanings": {
+        "de": "Anfang, Herrschaft",
+        "en": "beginning, rule"
+      },
       "forms": {
         "sg": {
           "nom": "ἀρχή",
@@ -118,7 +124,10 @@
       "lemma": "τέχνη",
       "gender": "f",
       "type": "1_eta",
-      "meaning": "Kunst, Handwerk",
+      "meanings": {
+        "de": "Kunst, Handwerk",
+        "en": "art, craft"
+      },
       "forms": {
         "sg": {
           "nom": "τέχνη",
@@ -140,7 +149,10 @@
       "lemma": "δίκη",
       "gender": "f",
       "type": "1_eta",
-      "meaning": "Recht, Gerechtigkeit",
+      "meanings": {
+        "de": "Recht, Gerechtigkeit",
+        "en": "justice, right"
+      },
       "forms": {
         "sg": {
           "nom": "δίκη",
@@ -162,7 +174,10 @@
       "lemma": "νίκη",
       "gender": "f",
       "type": "1_eta",
-      "meaning": "Sieg",
+      "meanings": {
+        "de": "Sieg",
+        "en": "victory"
+      },
       "forms": {
         "sg": {
           "nom": "νίκη",
@@ -184,7 +199,10 @@
       "lemma": "τιμή",
       "gender": "f",
       "type": "1_eta",
-      "meaning": "Ehre, Wert",
+      "meanings": {
+        "de": "Ehre, Wert",
+        "en": "honour, value"
+      },
       "forms": {
         "sg": {
           "nom": "τιμή",
@@ -206,7 +224,10 @@
       "lemma": "ἀρετή",
       "gender": "f",
       "type": "1_eta",
-      "meaning": "Tugend",
+      "meanings": {
+        "de": "Tugend",
+        "en": "virtue"
+      },
       "forms": {
         "sg": {
           "nom": "ἀρετή",
@@ -228,7 +249,10 @@
       "lemma": "γνώμη",
       "gender": "f",
       "type": "1_eta",
-      "meaning": "Meinung",
+      "meanings": {
+        "de": "Meinung",
+        "en": "opinion"
+      },
       "forms": {
         "sg": {
           "nom": "γνώμη",
@@ -250,7 +274,10 @@
       "lemma": "εἰρήνη",
       "gender": "f",
       "type": "1_eta",
-      "meaning": "Frieden",
+      "meanings": {
+        "de": "Frieden",
+        "en": "peace"
+      },
       "forms": {
         "sg": {
           "nom": "εἰρήνη",
@@ -272,7 +299,10 @@
       "lemma": "μάχη",
       "gender": "f",
       "type": "1_eta",
-      "meaning": "Schlacht",
+      "meanings": {
+        "de": "Schlacht",
+        "en": "battle"
+      },
       "forms": {
         "sg": {
           "nom": "μάχη",
@@ -294,7 +324,10 @@
       "lemma": "φωνή",
       "gender": "f",
       "type": "1_eta",
-      "meaning": "Stimme",
+      "meanings": {
+        "de": "Stimme",
+        "en": "voice"
+      },
       "forms": {
         "sg": {
           "nom": "φωνή",
@@ -316,7 +349,10 @@
       "lemma": "βουλή",
       "gender": "f",
       "type": "1_eta",
-      "meaning": "Rat, Wille",
+      "meanings": {
+        "de": "Rat, Wille",
+        "en": "counsel, will"
+      },
       "forms": {
         "sg": {
           "nom": "βουλή",
@@ -338,7 +374,10 @@
       "lemma": "ἡδονή",
       "gender": "f",
       "type": "1_eta",
-      "meaning": "Lust, Vergnügen",
+      "meanings": {
+        "de": "Lust, Vergnügen",
+        "en": "pleasure"
+      },
       "forms": {
         "sg": {
           "nom": "ἡδονή",
@@ -360,7 +399,10 @@
       "lemma": "κώμη",
       "gender": "f",
       "type": "1_eta",
-      "meaning": "Dorf",
+      "meanings": {
+        "de": "Dorf",
+        "en": "village"
+      },
       "forms": {
         "sg": {
           "nom": "κώμη",
@@ -382,7 +424,10 @@
       "lemma": "χώρα",
       "gender": "f",
       "type": "1_alpha_long",
-      "meaning": "Land, Gebiet",
+      "meanings": {
+        "de": "Land, Gebiet",
+        "en": "land, region"
+      },
       "forms": {
         "sg": {
           "nom": "χώρα",
@@ -404,7 +449,10 @@
       "lemma": "ἡμέρα",
       "gender": "f",
       "type": "1_alpha_long",
-      "meaning": "Tag",
+      "meanings": {
+        "de": "Tag",
+        "en": "day"
+      },
       "forms": {
         "sg": {
           "nom": "ἡμέρα",
@@ -426,7 +474,10 @@
       "lemma": "οἰκία",
       "gender": "f",
       "type": "1_alpha_long",
-      "meaning": "Haus",
+      "meanings": {
+        "de": "Haus",
+        "en": "house"
+      },
       "forms": {
         "sg": {
           "nom": "οἰκία",
@@ -448,7 +499,10 @@
       "lemma": "σοφία",
       "gender": "f",
       "type": "1_alpha_long",
-      "meaning": "Weisheit",
+      "meanings": {
+        "de": "Weisheit",
+        "en": "wisdom"
+      },
       "forms": {
         "sg": {
           "nom": "σοφία",
@@ -470,7 +524,10 @@
       "lemma": "ἀλήθεια",
       "gender": "f",
       "type": "1_alpha_long",
-      "meaning": "Wahrheit",
+      "meanings": {
+        "de": "Wahrheit",
+        "en": "truth"
+      },
       "forms": {
         "sg": {
           "nom": "ἀλήθεια",
@@ -492,7 +549,10 @@
       "lemma": "ἀγορά",
       "gender": "f",
       "type": "1_alpha_long",
-      "meaning": "Marktplatz",
+      "meanings": {
+        "de": "Marktplatz",
+        "en": "marketplace"
+      },
       "forms": {
         "sg": {
           "nom": "ἀγορά",
@@ -514,7 +574,10 @@
       "lemma": "θεά",
       "gender": "f",
       "type": "1_alpha_long",
-      "meaning": "Göttin",
+      "meanings": {
+        "de": "Göttin",
+        "en": "goddess"
+      },
       "forms": {
         "sg": {
           "nom": "θεά",
@@ -536,7 +599,10 @@
       "lemma": "στρατιά",
       "gender": "f",
       "type": "1_alpha_long",
-      "meaning": "Heer",
+      "meanings": {
+        "de": "Heer",
+        "en": "army"
+      },
       "forms": {
         "sg": {
           "nom": "στρατιά",
@@ -558,7 +624,10 @@
       "lemma": "θάλαττα",
       "gender": "f",
       "type": "1_alpha_short",
-      "meaning": "Meer",
+      "meanings": {
+        "de": "Meer",
+        "en": "sea"
+      },
       "forms": {
         "sg": {
           "nom": "θάλαττα",
@@ -580,7 +649,10 @@
       "lemma": "γλῶττα",
       "gender": "f",
       "type": "1_alpha_short",
-      "meaning": "Zunge, Sprache",
+      "meanings": {
+        "de": "Zunge, Sprache",
+        "en": "tongue, language"
+      },
       "forms": {
         "sg": {
           "nom": "γλῶττα",
@@ -602,7 +674,10 @@
       "lemma": "δόξα",
       "gender": "f",
       "type": "1_alpha_short",
-      "meaning": "Meinung, Ruhm",
+      "meanings": {
+        "de": "Meinung, Ruhm",
+        "en": "opinion, glory"
+      },
       "forms": {
         "sg": {
           "nom": "δόξα",
@@ -624,7 +699,10 @@
       "lemma": "μοῦσα",
       "gender": "f",
       "type": "1_alpha_short",
-      "meaning": "Muse",
+      "meanings": {
+        "de": "Muse",
+        "en": "Muse"
+      },
       "forms": {
         "sg": {
           "nom": "μοῦσα",
@@ -646,7 +724,10 @@
       "lemma": "τράπεζα",
       "gender": "f",
       "type": "1_alpha_short",
-      "meaning": "Tisch",
+      "meanings": {
+        "de": "Tisch",
+        "en": "table"
+      },
       "forms": {
         "sg": {
           "nom": "τράπεζα",
@@ -668,7 +749,10 @@
       "lemma": "πολίτης",
       "gender": "m",
       "type": "1_masc_hs",
-      "meaning": "Bürger",
+      "meanings": {
+        "de": "Bürger",
+        "en": "citizen"
+      },
       "forms": {
         "sg": {
           "nom": "πολίτης",
@@ -690,7 +774,10 @@
       "lemma": "ποιητής",
       "gender": "m",
       "type": "1_masc_hs",
-      "meaning": "Dichter",
+      "meanings": {
+        "de": "Dichter",
+        "en": "poet"
+      },
       "forms": {
         "sg": {
           "nom": "ποιητής",
@@ -712,7 +799,10 @@
       "lemma": "μαθητής",
       "gender": "m",
       "type": "1_masc_hs",
-      "meaning": "Schüler",
+      "meanings": {
+        "de": "Schüler",
+        "en": "pupil"
+      },
       "forms": {
         "sg": {
           "nom": "μαθητής",
@@ -734,7 +824,10 @@
       "lemma": "στρατιώτης",
       "gender": "m",
       "type": "1_masc_hs",
-      "meaning": "Soldat",
+      "meanings": {
+        "de": "Soldat",
+        "en": "soldier"
+      },
       "forms": {
         "sg": {
           "nom": "στρατιώτης",
@@ -756,7 +849,10 @@
       "lemma": "κριτής",
       "gender": "m",
       "type": "1_masc_hs",
-      "meaning": "Richter",
+      "meanings": {
+        "de": "Richter",
+        "en": "judge"
+      },
       "forms": {
         "sg": {
           "nom": "κριτής",
@@ -778,7 +874,10 @@
       "lemma": "δεσπότης",
       "gender": "m",
       "type": "1_masc_hs",
-      "meaning": "Herr, Gebieter",
+      "meanings": {
+        "de": "Herr, Gebieter",
+        "en": "master, lord"
+      },
       "forms": {
         "sg": {
           "nom": "δεσπότης",
@@ -800,7 +899,10 @@
       "lemma": "νεανίας",
       "gender": "m",
       "type": "1_masc_as",
-      "meaning": "Jüngling",
+      "meanings": {
+        "de": "Jüngling",
+        "en": "youth"
+      },
       "forms": {
         "sg": {
           "nom": "νεανίας",
@@ -822,7 +924,10 @@
       "lemma": "λόγος",
       "gender": "m",
       "type": "2_masc",
-      "meaning": "Wort, Rede, Vernunft",
+      "meanings": {
+        "de": "Wort, Rede, Vernunft",
+        "en": "word, speech, reason"
+      },
       "forms": {
         "sg": {
           "nom": "λόγος",
@@ -844,7 +949,10 @@
       "lemma": "ἄνθρωπος",
       "gender": "m",
       "type": "2_masc",
-      "meaning": "Mensch",
+      "meanings": {
+        "de": "Mensch",
+        "en": "human being"
+      },
       "forms": {
         "sg": {
           "nom": "ἄνθρωπος",
@@ -866,7 +974,10 @@
       "lemma": "θεός",
       "gender": "m",
       "type": "2_masc",
-      "meaning": "Gott",
+      "meanings": {
+        "de": "Gott",
+        "en": "god"
+      },
       "forms": {
         "sg": {
           "nom": "θεός",
@@ -888,7 +999,10 @@
       "lemma": "πόλεμος",
       "gender": "m",
       "type": "2_masc",
-      "meaning": "Krieg",
+      "meanings": {
+        "de": "Krieg",
+        "en": "war"
+      },
       "forms": {
         "sg": {
           "nom": "πόλεμος",
@@ -910,7 +1024,10 @@
       "lemma": "δῆμος",
       "gender": "m",
       "type": "2_masc",
-      "meaning": "Volk",
+      "meanings": {
+        "de": "Volk",
+        "en": "people"
+      },
       "forms": {
         "sg": {
           "nom": "δῆμος",
@@ -932,7 +1049,10 @@
       "lemma": "νόμος",
       "gender": "m",
       "type": "2_masc",
-      "meaning": "Gesetz, Brauch",
+      "meanings": {
+        "de": "Gesetz, Brauch",
+        "en": "law, custom"
+      },
       "forms": {
         "sg": {
           "nom": "νόμος",
@@ -954,7 +1074,10 @@
       "lemma": "φίλος",
       "gender": "m",
       "type": "2_masc",
-      "meaning": "Freund",
+      "meanings": {
+        "de": "Freund",
+        "en": "friend"
+      },
       "forms": {
         "sg": {
           "nom": "φίλος",
@@ -976,7 +1099,10 @@
       "lemma": "ἵππος",
       "gender": "m",
       "type": "2_masc",
-      "meaning": "Pferd",
+      "meanings": {
+        "de": "Pferd",
+        "en": "horse"
+      },
       "forms": {
         "sg": {
           "nom": "ἵππος",
@@ -998,7 +1124,10 @@
       "lemma": "ποταμός",
       "gender": "m",
       "type": "2_masc",
-      "meaning": "Fluss",
+      "meanings": {
+        "de": "Fluss",
+        "en": "river"
+      },
       "forms": {
         "sg": {
           "nom": "ποταμός",
@@ -1020,7 +1149,10 @@
       "lemma": "κίνδυνος",
       "gender": "m",
       "type": "2_masc",
-      "meaning": "Gefahr",
+      "meanings": {
+        "de": "Gefahr",
+        "en": "danger"
+      },
       "forms": {
         "sg": {
           "nom": "κίνδυνος",
@@ -1042,7 +1174,10 @@
       "lemma": "θάνατος",
       "gender": "m",
       "type": "2_masc",
-      "meaning": "Tod",
+      "meanings": {
+        "de": "Tod",
+        "en": "death"
+      },
       "forms": {
         "sg": {
           "nom": "θάνατος",
@@ -1064,7 +1199,10 @@
       "lemma": "οὐρανός",
       "gender": "m",
       "type": "2_masc",
-      "meaning": "Himmel",
+      "meanings": {
+        "de": "Himmel",
+        "en": "sky, heaven"
+      },
       "forms": {
         "sg": {
           "nom": "οὐρανός",
@@ -1086,7 +1224,10 @@
       "lemma": "ἰατρός",
       "gender": "m",
       "type": "2_masc",
-      "meaning": "Arzt",
+      "meanings": {
+        "de": "Arzt",
+        "en": "doctor"
+      },
       "forms": {
         "sg": {
           "nom": "ἰατρός",
@@ -1108,7 +1249,10 @@
       "lemma": "στρατηγός",
       "gender": "m",
       "type": "2_masc",
-      "meaning": "Feldherr",
+      "meanings": {
+        "de": "Feldherr",
+        "en": "general"
+      },
       "forms": {
         "sg": {
           "nom": "στρατηγός",
@@ -1130,7 +1274,10 @@
       "lemma": "τόπος",
       "gender": "m",
       "type": "2_masc",
-      "meaning": "Ort, Platz",
+      "meanings": {
+        "de": "Ort, Platz",
+        "en": "place"
+      },
       "forms": {
         "sg": {
           "nom": "τόπος",
@@ -1152,7 +1299,10 @@
       "lemma": "βίος",
       "gender": "m",
       "type": "2_masc",
-      "meaning": "Leben",
+      "meanings": {
+        "de": "Leben",
+        "en": "life"
+      },
       "forms": {
         "sg": {
           "nom": "βίος",
@@ -1174,7 +1324,10 @@
       "lemma": "χρόνος",
       "gender": "m",
       "type": "2_masc",
-      "meaning": "Zeit",
+      "meanings": {
+        "de": "Zeit",
+        "en": "time"
+      },
       "forms": {
         "sg": {
           "nom": "χρόνος",
@@ -1196,7 +1349,10 @@
       "lemma": "ὁδός",
       "gender": "f",
       "type": "2_masc",
-      "meaning": "Weg, Straße",
+      "meanings": {
+        "de": "Weg, Straße",
+        "en": "way, road"
+      },
       "forms": {
         "sg": {
           "nom": "ὁδός",
@@ -1218,7 +1374,10 @@
       "lemma": "νῆσος",
       "gender": "f",
       "type": "2_masc",
-      "meaning": "Insel",
+      "meanings": {
+        "de": "Insel",
+        "en": "island"
+      },
       "forms": {
         "sg": {
           "nom": "νῆσος",
@@ -1240,7 +1399,10 @@
       "lemma": "ἔργον",
       "gender": "n",
       "type": "2_neut",
-      "meaning": "Werk, Tat",
+      "meanings": {
+        "de": "Werk, Tat",
+        "en": "work, deed"
+      },
       "forms": {
         "sg": {
           "nom": "ἔργον",
@@ -1262,7 +1424,10 @@
       "lemma": "δῶρον",
       "gender": "n",
       "type": "2_neut",
-      "meaning": "Geschenk",
+      "meanings": {
+        "de": "Geschenk",
+        "en": "gift"
+      },
       "forms": {
         "sg": {
           "nom": "δῶρον",
@@ -1284,7 +1449,10 @@
       "lemma": "τέκνον",
       "gender": "n",
       "type": "2_neut",
-      "meaning": "Kind",
+      "meanings": {
+        "de": "Kind",
+        "en": "child"
+      },
       "forms": {
         "sg": {
           "nom": "τέκνον",
@@ -1306,7 +1474,10 @@
       "lemma": "δένδρον",
       "gender": "n",
       "type": "2_neut",
-      "meaning": "Baum",
+      "meanings": {
+        "de": "Baum",
+        "en": "tree"
+      },
       "forms": {
         "sg": {
           "nom": "δένδρον",
@@ -1328,7 +1499,10 @@
       "lemma": "ὅπλον",
       "gender": "n",
       "type": "2_neut",
-      "meaning": "Waffe",
+      "meanings": {
+        "de": "Waffe",
+        "en": "weapon"
+      },
       "forms": {
         "sg": {
           "nom": "ὅπλον",
@@ -1350,7 +1524,10 @@
       "lemma": "βιβλίον",
       "gender": "n",
       "type": "2_neut",
-      "meaning": "Buch",
+      "meanings": {
+        "de": "Buch",
+        "en": "book"
+      },
       "forms": {
         "sg": {
           "nom": "βιβλίον",
@@ -1372,7 +1549,10 @@
       "lemma": "φάρμακον",
       "gender": "n",
       "type": "2_neut",
-      "meaning": "Heilmittel, Gift",
+      "meanings": {
+        "de": "Heilmittel, Gift",
+        "en": "remedy, poison"
+      },
       "forms": {
         "sg": {
           "nom": "φάρμακον",
@@ -1394,7 +1574,10 @@
       "lemma": "στρατόπεδον",
       "gender": "n",
       "type": "2_neut",
-      "meaning": "Feldlager",
+      "meanings": {
+        "de": "Feldlager",
+        "en": "camp"
+      },
       "forms": {
         "sg": {
           "nom": "στρατόπεδον",
@@ -1416,7 +1599,10 @@
       "lemma": "φύλαξ",
       "gender": "m",
       "type": "3_stop",
-      "meaning": "Wächter",
+      "meanings": {
+        "de": "Wächter",
+        "en": "guard"
+      },
       "forms": {
         "sg": {
           "nom": "φύλαξ",
@@ -1438,7 +1624,10 @@
       "lemma": "ἐλπίς",
       "gender": "f",
       "type": "3_stop",
-      "meaning": "Hoffnung",
+      "meanings": {
+        "de": "Hoffnung",
+        "en": "hope"
+      },
       "forms": {
         "sg": {
           "nom": "ἐλπίς",
@@ -1460,7 +1649,10 @@
       "lemma": "πατρίς",
       "gender": "f",
       "type": "3_stop",
-      "meaning": "Vaterland",
+      "meanings": {
+        "de": "Vaterland",
+        "en": "fatherland"
+      },
       "forms": {
         "sg": {
           "nom": "πατρίς",
@@ -1482,7 +1674,10 @@
       "lemma": "παῖς",
       "gender": "m",
       "type": "3_stop",
-      "meaning": "Kind, Knabe",
+      "meanings": {
+        "de": "Kind, Knabe",
+        "en": "child, boy"
+      },
       "forms": {
         "sg": {
           "nom": "παῖς",
@@ -1504,7 +1699,10 @@
       "lemma": "χάρις",
       "gender": "f",
       "type": "3_stop",
-      "meaning": "Anmut, Dank",
+      "meanings": {
+        "de": "Anmut, Dank",
+        "en": "grace, thanks"
+      },
       "forms": {
         "sg": {
           "nom": "χάρις",
@@ -1526,7 +1724,10 @@
       "lemma": "νύξ",
       "gender": "f",
       "type": "3_stop",
-      "meaning": "Nacht",
+      "meanings": {
+        "de": "Nacht",
+        "en": "night"
+      },
       "forms": {
         "sg": {
           "nom": "νύξ",
@@ -1548,7 +1749,10 @@
       "lemma": "γυνή",
       "gender": "f",
       "type": "3_stop",
-      "meaning": "Frau",
+      "meanings": {
+        "de": "Frau",
+        "en": "woman"
+      },
       "forms": {
         "sg": {
           "nom": "γυνή",
@@ -1570,7 +1774,10 @@
       "lemma": "σῶμα",
       "gender": "n",
       "type": "3_stop",
-      "meaning": "Körper",
+      "meanings": {
+        "de": "Körper",
+        "en": "body"
+      },
       "forms": {
         "sg": {
           "nom": "σῶμα",
@@ -1592,7 +1799,10 @@
       "lemma": "ὄνομα",
       "gender": "n",
       "type": "3_stop",
-      "meaning": "Name",
+      "meanings": {
+        "de": "Name",
+        "en": "name"
+      },
       "forms": {
         "sg": {
           "nom": "ὄνομα",
@@ -1614,7 +1824,10 @@
       "lemma": "πρᾶγμα",
       "gender": "n",
       "type": "3_stop",
-      "meaning": "Sache, Tat",
+      "meanings": {
+        "de": "Sache, Tat",
+        "en": "thing, deed"
+      },
       "forms": {
         "sg": {
           "nom": "πρᾶγμα",
@@ -1636,7 +1849,10 @@
       "lemma": "αἷμα",
       "gender": "n",
       "type": "3_stop",
-      "meaning": "Blut",
+      "meanings": {
+        "de": "Blut",
+        "en": "blood"
+      },
       "forms": {
         "sg": {
           "nom": "αἷμα",
@@ -1658,7 +1874,10 @@
       "lemma": "γράμμα",
       "gender": "n",
       "type": "3_stop",
-      "meaning": "Buchstabe, Brief",
+      "meanings": {
+        "de": "Buchstabe, Brief",
+        "en": "letter"
+      },
       "forms": {
         "sg": {
           "nom": "γράμμα",
@@ -1680,7 +1899,10 @@
       "lemma": "πνεῦμα",
       "gender": "n",
       "type": "3_stop",
-      "meaning": "Hauch, Geist",
+      "meanings": {
+        "de": "Hauch, Geist",
+        "en": "breath, spirit"
+      },
       "forms": {
         "sg": {
           "nom": "πνεῦμα",
@@ -1702,7 +1924,10 @@
       "lemma": "χρῆμα",
       "gender": "n",
       "type": "3_stop",
-      "meaning": "Sache; (Pl.) Geld",
+      "meanings": {
+        "de": "Sache; (Pl.) Geld",
+        "en": "thing; (pl.) money"
+      },
       "forms": {
         "sg": {
           "nom": "χρῆμα",
@@ -1724,7 +1949,10 @@
       "lemma": "ὕδωρ",
       "gender": "n",
       "type": "3_stop",
-      "meaning": "Wasser",
+      "meanings": {
+        "de": "Wasser",
+        "en": "water"
+      },
       "forms": {
         "sg": {
           "nom": "ὕδωρ",
@@ -1746,7 +1974,10 @@
       "lemma": "δαίμων",
       "gender": "m",
       "type": "3_nasal",
-      "meaning": "Gottheit, Dämon",
+      "meanings": {
+        "de": "Gottheit, Dämon",
+        "en": "deity, demon"
+      },
       "forms": {
         "sg": {
           "nom": "δαίμων",
@@ -1768,7 +1999,10 @@
       "lemma": "ἡγεμών",
       "gender": "m",
       "type": "3_nasal",
-      "meaning": "Führer",
+      "meanings": {
+        "de": "Führer",
+        "en": "leader"
+      },
       "forms": {
         "sg": {
           "nom": "ἡγεμών",
@@ -1790,7 +2024,10 @@
       "lemma": "Ἕλλην",
       "gender": "m",
       "type": "3_nasal",
-      "meaning": "Grieche",
+      "meanings": {
+        "de": "Grieche",
+        "en": "Greek"
+      },
       "forms": {
         "sg": {
           "nom": "Ἕλλην",
@@ -1812,7 +2049,10 @@
       "lemma": "ποιμήν",
       "gender": "m",
       "type": "3_nasal",
-      "meaning": "Hirte",
+      "meanings": {
+        "de": "Hirte",
+        "en": "shepherd"
+      },
       "forms": {
         "sg": {
           "nom": "ποιμήν",
@@ -1834,7 +2074,10 @@
       "lemma": "εἰκών",
       "gender": "f",
       "type": "3_nasal",
-      "meaning": "Bild",
+      "meanings": {
+        "de": "Bild",
+        "en": "image"
+      },
       "forms": {
         "sg": {
           "nom": "εἰκών",
@@ -1856,7 +2099,10 @@
       "lemma": "ἀγών",
       "gender": "m",
       "type": "3_nasal",
-      "meaning": "Wettkampf",
+      "meanings": {
+        "de": "Wettkampf",
+        "en": "contest"
+      },
       "forms": {
         "sg": {
           "nom": "ἀγών",
@@ -1878,7 +2124,10 @@
       "lemma": "λιμήν",
       "gender": "m",
       "type": "3_nasal",
-      "meaning": "Hafen",
+      "meanings": {
+        "de": "Hafen",
+        "en": "harbour"
+      },
       "forms": {
         "sg": {
           "nom": "λιμήν",
@@ -1900,7 +2149,10 @@
       "lemma": "χειμών",
       "gender": "m",
       "type": "3_nasal",
-      "meaning": "Winter, Sturm",
+      "meanings": {
+        "de": "Winter, Sturm",
+        "en": "winter, storm"
+      },
       "forms": {
         "sg": {
           "nom": "χειμών",
@@ -1922,7 +2174,10 @@
       "lemma": "γέρων",
       "gender": "m",
       "type": "3_nt",
-      "meaning": "Greis",
+      "meanings": {
+        "de": "Greis",
+        "en": "old man"
+      },
       "forms": {
         "sg": {
           "nom": "γέρων",
@@ -1944,7 +2199,10 @@
       "lemma": "ἄρχων",
       "gender": "m",
       "type": "3_nt",
-      "meaning": "Herrscher, Archon",
+      "meanings": {
+        "de": "Herrscher, Archon",
+        "en": "ruler, archon"
+      },
       "forms": {
         "sg": {
           "nom": "ἄρχων",
@@ -1966,7 +2224,10 @@
       "lemma": "λέων",
       "gender": "m",
       "type": "3_nt",
-      "meaning": "Löwe",
+      "meanings": {
+        "de": "Löwe",
+        "en": "lion"
+      },
       "forms": {
         "sg": {
           "nom": "λέων",
@@ -1988,7 +2249,10 @@
       "lemma": "γίγας",
       "gender": "m",
       "type": "3_nt",
-      "meaning": "Riese",
+      "meanings": {
+        "de": "Riese",
+        "en": "giant"
+      },
       "forms": {
         "sg": {
           "nom": "γίγας",
@@ -2010,7 +2274,10 @@
       "lemma": "ὀδούς",
       "gender": "m",
       "type": "3_nt",
-      "meaning": "Zahn",
+      "meanings": {
+        "de": "Zahn",
+        "en": "tooth"
+      },
       "forms": {
         "sg": {
           "nom": "ὀδούς",
@@ -2032,7 +2299,10 @@
       "lemma": "ῥήτωρ",
       "gender": "m",
       "type": "3_liquid",
-      "meaning": "Redner",
+      "meanings": {
+        "de": "Redner",
+        "en": "orator"
+      },
       "forms": {
         "sg": {
           "nom": "ῥήτωρ",
@@ -2054,7 +2324,10 @@
       "lemma": "πατήρ",
       "gender": "m",
       "type": "3_liquid",
-      "meaning": "Vater",
+      "meanings": {
+        "de": "Vater",
+        "en": "father"
+      },
       "forms": {
         "sg": {
           "nom": "πατήρ",
@@ -2076,7 +2349,10 @@
       "lemma": "μήτηρ",
       "gender": "f",
       "type": "3_liquid",
-      "meaning": "Mutter",
+      "meanings": {
+        "de": "Mutter",
+        "en": "mother"
+      },
       "forms": {
         "sg": {
           "nom": "μήτηρ",
@@ -2098,7 +2374,10 @@
       "lemma": "θυγάτηρ",
       "gender": "f",
       "type": "3_liquid",
-      "meaning": "Tochter",
+      "meanings": {
+        "de": "Tochter",
+        "en": "daughter"
+      },
       "forms": {
         "sg": {
           "nom": "θυγάτηρ",
@@ -2120,7 +2399,10 @@
       "lemma": "ἀνήρ",
       "gender": "m",
       "type": "3_liquid",
-      "meaning": "Mann",
+      "meanings": {
+        "de": "Mann",
+        "en": "man"
+      },
       "forms": {
         "sg": {
           "nom": "ἀνήρ",
@@ -2142,7 +2424,10 @@
       "lemma": "ἀστήρ",
       "gender": "m",
       "type": "3_liquid",
-      "meaning": "Stern",
+      "meanings": {
+        "de": "Stern",
+        "en": "star"
+      },
       "forms": {
         "sg": {
           "nom": "ἀστήρ",
@@ -2164,7 +2449,10 @@
       "lemma": "σωτήρ",
       "gender": "m",
       "type": "3_liquid",
-      "meaning": "Retter",
+      "meanings": {
+        "de": "Retter",
+        "en": "saviour"
+      },
       "forms": {
         "sg": {
           "nom": "σωτήρ",
@@ -2186,7 +2474,10 @@
       "lemma": "γένος",
       "gender": "n",
       "type": "3_sigma",
-      "meaning": "Geschlecht, Art",
+      "meanings": {
+        "de": "Geschlecht, Art",
+        "en": "race, kind"
+      },
       "forms": {
         "sg": {
           "nom": "γένος",
@@ -2208,7 +2499,10 @@
       "lemma": "ἔθνος",
       "gender": "n",
       "type": "3_sigma",
-      "meaning": "Volk, Stamm",
+      "meanings": {
+        "de": "Volk, Stamm",
+        "en": "people, tribe"
+      },
       "forms": {
         "sg": {
           "nom": "ἔθνος",
@@ -2230,7 +2524,10 @@
       "lemma": "ἔτος",
       "gender": "n",
       "type": "3_sigma",
-      "meaning": "Jahr",
+      "meanings": {
+        "de": "Jahr",
+        "en": "year"
+      },
       "forms": {
         "sg": {
           "nom": "ἔτος",
@@ -2252,7 +2549,10 @@
       "lemma": "τεῖχος",
       "gender": "n",
       "type": "3_sigma",
-      "meaning": "Mauer",
+      "meanings": {
+        "de": "Mauer",
+        "en": "wall"
+      },
       "forms": {
         "sg": {
           "nom": "τεῖχος",
@@ -2274,7 +2574,10 @@
       "lemma": "μέρος",
       "gender": "n",
       "type": "3_sigma",
-      "meaning": "Teil",
+      "meanings": {
+        "de": "Teil",
+        "en": "part"
+      },
       "forms": {
         "sg": {
           "nom": "μέρος",
@@ -2296,7 +2599,10 @@
       "lemma": "κράτος",
       "gender": "n",
       "type": "3_sigma",
-      "meaning": "Stärke, Macht",
+      "meanings": {
+        "de": "Stärke, Macht",
+        "en": "strength, power"
+      },
       "forms": {
         "sg": {
           "nom": "κράτος",
@@ -2318,7 +2624,10 @@
       "lemma": "ψεῦδος",
       "gender": "n",
       "type": "3_sigma",
-      "meaning": "Lüge",
+      "meanings": {
+        "de": "Lüge",
+        "en": "lie"
+      },
       "forms": {
         "sg": {
           "nom": "ψεῦδος",
@@ -2340,7 +2649,10 @@
       "lemma": "πάθος",
       "gender": "n",
       "type": "3_sigma",
-      "meaning": "Leid, Leidenschaft",
+      "meanings": {
+        "de": "Leid, Leidenschaft",
+        "en": "suffering, passion"
+      },
       "forms": {
         "sg": {
           "nom": "πάθος",
@@ -2362,7 +2674,10 @@
       "lemma": "βέλος",
       "gender": "n",
       "type": "3_sigma",
-      "meaning": "Geschoss",
+      "meanings": {
+        "de": "Geschoss",
+        "en": "missile"
+      },
       "forms": {
         "sg": {
           "nom": "βέλος",
@@ -2384,7 +2699,10 @@
       "lemma": "πόλις",
       "gender": "f",
       "type": "3_vowel_is",
-      "meaning": "Stadt, Staat",
+      "meanings": {
+        "de": "Stadt, Staat",
+        "en": "city, state"
+      },
       "forms": {
         "sg": {
           "nom": "πόλις",
@@ -2406,7 +2724,10 @@
       "lemma": "φύσις",
       "gender": "f",
       "type": "3_vowel_is",
-      "meaning": "Natur",
+      "meanings": {
+        "de": "Natur",
+        "en": "nature"
+      },
       "forms": {
         "sg": {
           "nom": "φύσις",
@@ -2428,7 +2749,10 @@
       "lemma": "δύναμις",
       "gender": "f",
       "type": "3_vowel_is",
-      "meaning": "Kraft, Macht",
+      "meanings": {
+        "de": "Kraft, Macht",
+        "en": "power, force"
+      },
       "forms": {
         "sg": {
           "nom": "δύναμις",
@@ -2450,7 +2774,10 @@
       "lemma": "τάξις",
       "gender": "f",
       "type": "3_vowel_is",
-      "meaning": "Ordnung",
+      "meanings": {
+        "de": "Ordnung",
+        "en": "order"
+      },
       "forms": {
         "sg": {
           "nom": "τάξις",
@@ -2472,7 +2799,10 @@
       "lemma": "πρᾶξις",
       "gender": "f",
       "type": "3_vowel_is",
-      "meaning": "Handlung, Tat",
+      "meanings": {
+        "de": "Handlung, Tat",
+        "en": "action, deed"
+      },
       "forms": {
         "sg": {
           "nom": "πρᾶξις",
@@ -2494,7 +2824,10 @@
       "lemma": "γνῶσις",
       "gender": "f",
       "type": "3_vowel_is",
-      "meaning": "Erkenntnis",
+      "meanings": {
+        "de": "Erkenntnis",
+        "en": "knowledge"
+      },
       "forms": {
         "sg": {
           "nom": "γνῶσις",
@@ -2516,7 +2849,10 @@
       "lemma": "κρίσις",
       "gender": "f",
       "type": "3_vowel_is",
-      "meaning": "Entscheidung",
+      "meanings": {
+        "de": "Entscheidung",
+        "en": "decision"
+      },
       "forms": {
         "sg": {
           "nom": "κρίσις",
@@ -2538,7 +2874,10 @@
       "lemma": "πίστις",
       "gender": "f",
       "type": "3_vowel_is",
-      "meaning": "Glaube, Vertrauen",
+      "meanings": {
+        "de": "Glaube, Vertrauen",
+        "en": "faith, trust"
+      },
       "forms": {
         "sg": {
           "nom": "πίστις",
@@ -2560,7 +2899,10 @@
       "lemma": "ὕβρις",
       "gender": "f",
       "type": "3_vowel_is",
-      "meaning": "Frevel, Übermut",
+      "meanings": {
+        "de": "Frevel, Übermut",
+        "en": "insolence, hubris"
+      },
       "forms": {
         "sg": {
           "nom": "ὕβρις",
@@ -2582,7 +2924,10 @@
       "lemma": "βασιλεύς",
       "gender": "m",
       "type": "3_vowel_eus",
-      "meaning": "König",
+      "meanings": {
+        "de": "König",
+        "en": "king"
+      },
       "forms": {
         "sg": {
           "nom": "βασιλεύς",
@@ -2604,7 +2949,10 @@
       "lemma": "ἱερεύς",
       "gender": "m",
       "type": "3_vowel_eus",
-      "meaning": "Priester",
+      "meanings": {
+        "de": "Priester",
+        "en": "priest"
+      },
       "forms": {
         "sg": {
           "nom": "ἱερεύς",
@@ -2626,7 +2974,10 @@
       "lemma": "ἱππεύς",
       "gender": "m",
       "type": "3_vowel_eus",
-      "meaning": "Reiter",
+      "meanings": {
+        "de": "Reiter",
+        "en": "horseman"
+      },
       "forms": {
         "sg": {
           "nom": "ἱππεύς",
@@ -2648,7 +2999,10 @@
       "lemma": "γραμματεύς",
       "gender": "m",
       "type": "3_vowel_eus",
-      "meaning": "Schreiber",
+      "meanings": {
+        "de": "Schreiber",
+        "en": "scribe"
+      },
       "forms": {
         "sg": {
           "nom": "γραμματεύς",
@@ -2670,7 +3024,10 @@
       "lemma": "γονεύς",
       "gender": "m",
       "type": "3_vowel_eus",
-      "meaning": "Erzeuger; (Pl.) Eltern",
+      "meanings": {
+        "de": "Erzeuger; (Pl.) Eltern",
+        "en": "parent; (pl.) parents"
+      },
       "forms": {
         "sg": {
           "nom": "γονεύς",
@@ -2692,7 +3049,10 @@
       "lemma": "φονεύς",
       "gender": "m",
       "type": "3_vowel_eus",
-      "meaning": "Mörder",
+      "meanings": {
+        "de": "Mörder",
+        "en": "murderer"
+      },
       "forms": {
         "sg": {
           "nom": "φονεύς",
@@ -2714,7 +3074,10 @@
       "lemma": "χαλκεύς",
       "gender": "m",
       "type": "3_vowel_eus",
-      "meaning": "Schmied",
+      "meanings": {
+        "de": "Schmied",
+        "en": "smith"
+      },
       "forms": {
         "sg": {
           "nom": "χαλκεύς",
@@ -2736,7 +3099,10 @@
       "lemma": "ἁλιεύς",
       "gender": "m",
       "type": "3_vowel_eus",
-      "meaning": "Fischer",
+      "meanings": {
+        "de": "Fischer",
+        "en": "fisherman"
+      },
       "forms": {
         "sg": {
           "nom": "ἁλιεύς",

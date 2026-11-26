@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'l10n/generated/app_localizations.dart';
 import 'models/noun.dart';
 import 'pages/quiz_page.dart';
 import 'pages/settings_page.dart';
@@ -17,7 +19,13 @@ Future<void> main() async {
   final service = PrefsService(prefs);
   final settings = service.loadSettings();
   final catalog = await loadCatalog();
-  runApp(TrainerApp(service: service, settings: settings, catalog: catalog));
+  final packageInfo = await PackageInfo.fromPlatform();
+  runApp(TrainerApp(
+    service: service,
+    settings: settings,
+    catalog: catalog,
+    appVersion: packageInfo.version,
+  ));
 }
 
 Future<NounCatalog> loadCatalog() async {
@@ -29,12 +37,14 @@ class TrainerApp extends StatefulWidget {
   final PrefsService service;
   final AppSettings settings;
   final NounCatalog catalog;
+  final String appVersion;
 
   const TrainerApp({
     super.key,
     required this.service,
     required this.settings,
     required this.catalog,
+    required this.appVersion,
   });
 
   @override
@@ -79,8 +89,11 @@ class TrainerAppState extends State<TrainerApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: navigatorKey,
-      title: 'Ancient Greek Trainer',
+      onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
       debugShowCheckedModeBanner: false,
+      locale: settings.locale,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       themeMode: settings.themeMode,
@@ -90,6 +103,7 @@ class TrainerAppState extends State<TrainerApp> {
         prefs: widget.service,
         settings: settings,
         onOpenSettings: _openSettings,
+        appVersion: widget.appVersion,
       ),
     );
   }

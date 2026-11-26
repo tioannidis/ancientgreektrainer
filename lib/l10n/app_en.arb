@@ -1,0 +1,132 @@
+{
+  "@@locale": "en",
+  "appTitle": "Declension Trainer",
+  "appSubtitle": "Ancient Greek · {count} nouns v{version}",
+  "@appSubtitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsTooltip": "Settings",
+  "statsCorrect": "Correct",
+  "statsPartial": "Accent",
+  "statsWrong": "Wrong",
+  "statsStreak": "Streak",
+  "statsAccuracy": "Accuracy",
+  "statsSkipped": "Skipped",
+  "feedbackCorrect": "✓ Correct! {answer}",
+  "@feedbackCorrect": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "feedbackPartial": "◐ Almost! The declension is right, but the accent is wrong.\nCorrect: {answer}",
+  "@feedbackPartial": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "feedbackWrong": "✗ Wrong. The correct answer is: {answer}",
+  "@feedbackWrong": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "feedbackSkipped": "» Skipped. The answer would be: {answer}",
+  "@feedbackSkipped": {
+    "placeholders": {
+      "answer": {
+        "type": "String"
+      }
+    }
+  },
+  "fullParadigm": "Full paradigm",
+  "singular": "Singular",
+  "plural": "Plural",
+  "insertLemma": "Insert lemma",
+  "answerHint": "Your answer…",
+  "check": "Check",
+  "skip": "Skip »",
+  "hideTable": "Hide table",
+  "fullDeclension": "Full declension",
+  "nextWord": "Next word →",
+  "buildForm": "Form the {gramCase} {number}{articleHint}:",
+  "@buildForm": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      },
+      "articleHint": {
+        "type": "String"
+      },
+      "gramCase": {
+        "type": "String"
+      }
+    }
+  },
+  "withArticleSuffix": " (with article)",
+  "settingsTitle": "Settings",
+  "declensionsSection": "Declensions",
+  "declChip": "{n, select, 1{1st decl.} 2{2nd decl.} 3{3rd decl.} other{{n}. decl.}}",
+  "@declChip": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      }
+    }
+  },
+  "casesSection": "Cases",
+  "articleToggle": "Ask for article",
+  "fullKeyboardToggle": "Full Greek keyboard",
+  "themeSection": "Theme",
+  "themeDark": "Dark",
+  "themeLight": "Light",
+  "themeSystem": "System",
+  "languageSection": "Language",
+  "languageSystem": "System language",
+  "shortcutsSection": "Keyboard shortcuts",
+  "shortcutsText": "Enter: Check / Next word · Tab: Skip · Esc: Toggle paradigm · Space: Next word (after answering)",
+  "resetStatsButton": "Reset statistics",
+  "resetStatsTitle": "Reset statistics?",
+  "resetStatsBody": "All counters and learning progress will be deleted.",
+  "cancel": "Cancel",
+  "reset": "Reset",
+  "caseNom": "Nominative",
+  "caseGen": "Genitive",
+  "caseDat": "Dative",
+  "caseAcc": "Accusative",
+  "caseVoc": "Vocative",
+  "caseAbbrNom": "Nom.",
+  "caseAbbrGen": "Gen.",
+  "caseAbbrDat": "Dat.",
+  "caseAbbrAcc": "Acc.",
+  "caseAbbrVoc": "Voc.",
+  "genderM": "masculine",
+  "genderF": "feminine",
+  "genderN": "neuter",
+  "decl1Eta": "1st decl. (η)",
+  "decl1AlphaLong": "1st decl. (ᾱ)",
+  "decl1AlphaShort": "1st decl. (ᾰ)",
+  "decl1MascHs": "1st decl. masc. (ης)",
+  "decl1MascAs": "1st decl. masc. (ας)",
+  "decl2Masc": "2nd decl. (ος)",
+  "decl2Neut": "2nd decl. (ον)",
+  "decl3Stop": "3rd decl. (stop)",
+  "decl3Nasal": "3rd decl. (nasal)",
+  "decl3Liquid": "3rd decl. (liquid)",
+  "decl3Sigma": "3rd decl. (σ-stem)",
+  "decl3VowelIs": "3rd decl. (ι-stem)",
+  "decl3VowelEus": "3rd decl. (ευ-stem)",
+  "decl3Nt": "3rd decl. (ντ-stem)"
+}

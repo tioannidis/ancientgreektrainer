@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/generated/app_localizations.dart';
+import '../l10n/grammar_labels.dart';
+import '../l10n/languages.dart';
 import '../models/noun.dart';
 import '../settings/app_settings.dart';
 
@@ -21,19 +24,20 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   Future<void> _confirmReset() async {
+    final l10n = AppLocalizations.of(context);
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Statistik zurücksetzen?'),
-        content: const Text('Alle Zähler und Lernfortschritte werden gelöscht.'),
+        title: Text(l10n.resetStatsTitle),
+        content: Text(l10n.resetStatsBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Abbrechen'),
+            child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: const Text('Zurücksetzen'),
+            child: Text(l10n.reset),
           ),
         ],
       ),
@@ -43,20 +47,22 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final s = widget.settings;
     return Scaffold(
-      appBar: AppBar(title: const Text('Einstellungen')),
+      appBar: AppBar(title: Text(l10n.settingsTitle)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text('Deklinationen', style: TextStyle(fontWeight: FontWeight.bold)),
+          Text(l10n.declensionsSection,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
           Wrap(
             spacing: 8,
             children: [
               for (final d in ['1', '2', '3'])
                 FilterChip(
-                  label: Text('$d. Dekl.'),
+                  label: Text(l10n.declChip(d)),
                   selected: s.selectedDecl.contains(d),
                   onSelected: (_) {
                     setState(() => s.toggleDecl(d));
@@ -66,14 +72,15 @@ class _SettingsPageState extends State<SettingsPage> {
             ],
           ),
           const SizedBox(height: 16),
-          const Text('Kasus', style: TextStyle(fontWeight: FontWeight.bold)),
+          Text(l10n.casesSection,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
           Wrap(
             spacing: 8,
             children: [
               for (final c in GramCase.values)
                 FilterChip(
-                  label: Text('${caseNamesDe[c]!.substring(0, 3)}.'),
+                  label: Text(caseAbbr(l10n, c)),
                   selected: s.selectedCases.contains(c),
                   onSelected: (_) {
                     setState(() => s.toggleCase(c));
@@ -84,7 +91,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           const SizedBox(height: 8),
           SwitchListTile(
-            title: const Text('Artikel mit abfragen'),
+            title: Text(l10n.articleToggle),
             value: s.includeArticle,
             onChanged: (v) {
               setState(() => s.includeArticle = v);
@@ -92,7 +99,7 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
           SwitchListTile(
-            title: const Text('Griechische Volltastatur'),
+            title: Text(l10n.fullKeyboardToggle),
             value: s.showFullKeyboard,
             onChanged: (v) {
               setState(() => s.showFullKeyboard = v);
@@ -100,13 +107,16 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
           const SizedBox(height: 8),
-          const Text('Design', style: TextStyle(fontWeight: FontWeight.bold)),
+          Text(l10n.themeSection,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
           SegmentedButton<ThemeMode>(
-            segments: const [
-              ButtonSegment(value: ThemeMode.dark, label: Text('Dunkel')),
-              ButtonSegment(value: ThemeMode.light, label: Text('Hell')),
-              ButtonSegment(value: ThemeMode.system, label: Text('System')),
+            segments: [
+              ButtonSegment(value: ThemeMode.dark, label: Text(l10n.themeDark)),
+              ButtonSegment(
+                  value: ThemeMode.light, label: Text(l10n.themeLight)),
+              ButtonSegment(
+                  value: ThemeMode.system, label: Text(l10n.themeSystem)),
             ],
             selected: {s.themeMode},
             onSelectionChanged: (sel) {
@@ -115,17 +125,44 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
           const SizedBox(height: 16),
-          const Text('Tastenkürzel', style: TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(height: 4),
-          const Text(
-            'Enter: Prüfen / Nächstes Wort · Tab: Überspringen · '
-            'Esc: Paradigma ein/aus · Leertaste: Nächstes Wort (nach Antwort)',
+          Text(l10n.languageSection,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          InputDecorator(
+            decoration: const InputDecoration(border: OutlineInputBorder()),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                isExpanded: true,
+                value: s.language,
+                items: [
+                  DropdownMenuItem(
+                    value: systemLanguageCode,
+                    child: Text(l10n.languageSystem),
+                  ),
+                  for (final language in supportedAppLanguages)
+                    DropdownMenuItem(
+                      value: language.code,
+                      child: Text(language.nativeName),
+                    ),
+                ],
+                onChanged: (value) {
+                  if (value == null) return;
+                  setState(() => s.language = value);
+                  widget.onChanged();
+                },
+              ),
+            ),
           ),
+          const SizedBox(height: 16),
+          Text(l10n.shortcutsSection,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 4),
+          Text(l10n.shortcutsText),
           const SizedBox(height: 16),
           OutlinedButton.icon(
             onPressed: _confirmReset,
             icon: const Icon(Icons.delete_outline),
-            label: const Text('Statistik zurücksetzen'),
+            label: Text(l10n.resetStatsButton),
           ),
         ],
       ),

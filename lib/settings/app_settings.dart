@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/languages.dart';
 import '../models/noun.dart';
 
 class AppSettings {
@@ -8,6 +9,7 @@ class AppSettings {
   bool includeArticle;
   bool showFullKeyboard;
   ThemeMode themeMode;
+  String language;
 
   AppSettings({
     Set<String>? selectedDecl,
@@ -15,8 +17,12 @@ class AppSettings {
     this.includeArticle = false,
     this.showFullKeyboard = false,
     this.themeMode = ThemeMode.dark,
+    this.language = systemLanguageCode,
   })  : selectedDecl = selectedDecl ?? {'1', '2', '3'},
         selectedCases = selectedCases ?? GramCase.values.toList();
+
+  Locale? get locale =>
+      language == systemLanguageCode ? null : Locale(language);
 
   void toggleDecl(String d) {
     if (selectedDecl.contains(d)) {
@@ -40,6 +46,7 @@ class AppSettings {
         'includeArticle': includeArticle,
         'showFullKeyboard': showFullKeyboard,
         'themeMode': themeMode.name,
+        'language': language,
       };
 
   factory AppSettings.fromJson(Map<String, dynamic> j) {
@@ -65,6 +72,7 @@ class AppSettings {
       includeArticle: j['includeArticle'] as bool? ?? false,
       showFullKeyboard: j['showFullKeyboard'] as bool? ?? false,
       themeMode: themeMode,
+      language: normalizeLanguageSetting(j['language'] as String?),
     );
   }
 }

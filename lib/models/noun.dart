@@ -25,18 +25,23 @@ class Noun {
   final String lemma;
   final GramGender gender;
   final String type;
-  final String meaning;
+  final Map<String, String> meanings;
   final Map<GramNumber, Map<GramCase, String>> forms;
 
   const Noun({
     required this.lemma,
     required this.gender,
     required this.type,
-    required this.meaning,
+    required this.meanings,
     required this.forms,
   });
 
   String? form(GramNumber number, GramCase gramCase) => forms[number]?[gramCase];
+
+  String meaningFor(String languageCode) =>
+      meanings[languageCode] ??
+      meanings['en'] ??
+      (meanings.isEmpty ? '' : meanings.values.first);
 
   factory Noun.fromJson(Map<String, dynamic> json) {
     final forms = <GramNumber, Map<GramCase, String>>{};
@@ -56,9 +61,18 @@ class Noun {
       lemma: json['lemma'] as String,
       gender: GramGenderX.fromId(json['gender'] as String),
       type: json['type'] as String,
-      meaning: json['meaning'] as String,
+      meanings: _parseMeanings(json),
       forms: forms,
     );
+  }
+
+  static Map<String, String> _parseMeanings(Map<String, dynamic> json) {
+    final raw = json['meanings'] ?? json['meaning'];
+    if (raw is Map) {
+      return raw.map((key, value) => MapEntry(key as String, value as String));
+    }
+    if (raw is String) return {'de': raw};
+    return const {};
   }
 }
 
@@ -107,44 +121,8 @@ class NounCatalog {
   }
 }
 
-const Map<GramCase, String> caseNamesDe = {
-  GramCase.nom: 'Nominativ',
-  GramCase.gen: 'Genitiv',
-  GramCase.dat: 'Dativ',
-  GramCase.acc: 'Akkusativ',
-  GramCase.voc: 'Vokativ',
-};
-
-const Map<GramNumber, String> numNamesDe = {
-  GramNumber.sg: 'Singular',
-  GramNumber.pl: 'Plural',
-};
-
-const Map<GramGender, String> genderNamesDe = {
-  GramGender.m: 'maskulin',
-  GramGender.f: 'feminin',
-  GramGender.n: 'neutrum',
-};
-
 const Map<GramGender, String> genderArticle = {
   GramGender.m: 'ὁ',
   GramGender.f: 'ἡ',
   GramGender.n: 'τό',
-};
-
-const Map<String, String> declLabels = {
-  '1_eta': '1. Dekl. (η)',
-  '1_alpha_long': '1. Dekl. (ᾱ)',
-  '1_alpha_short': '1. Dekl. (ᾰ)',
-  '1_masc_hs': '1. Dekl. mask. (ης)',
-  '1_masc_as': '1. Dekl. mask. (ας)',
-  '2_masc': '2. Dekl. (ος)',
-  '2_neut': '2. Dekl. (ον)',
-  '3_stop': '3. Dekl. (Verschlusslaut)',
-  '3_nasal': '3. Dekl. (Nasal)',
-  '3_liquid': '3. Dekl. (Liquida)',
-  '3_sigma': '3. Dekl. (σ-Stamm)',
-  '3_vowel_is': '3. Dekl. (ι-Stamm)',
-  '3_vowel_eus': '3. Dekl. (ευ-Stamm)',
-  '3_nt': '3. Dekl. (ντ-Stamm)',
 };
