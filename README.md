@@ -1,6 +1,6 @@
 # Ancient Greek Trainer (Flutter/Android)
 
-Native Android-App für den Altgriechisch-Deklinationstrainer. Die PWA im Repo-Root bleibt unverändert; die Logik aus `index.html` ist 1:1 nach Dart portiert (Filter, Fehlergewichtung, Antwortprüfung inkl. Akzente/Artikel, Statistik).
+Native Android-App für den Altgriechisch-Deklinationstrainer. Die Logik der ursprünglichen PWA ist 1:1 nach Dart portiert (Filter, Fehlergewichtung, Antwortprüfung inkl. Akzente/Artikel, Statistik).
 
 Lizenz: GNU GPL v3.0 (siehe `LICENSE` im Repo-Root). Nur Open-Source-Abhängigkeiten (Flutter SDK, `shared_preferences`).
 
@@ -39,6 +39,61 @@ flutter build apk --debug
 Jedes Substantiv besitzt ein `meanings`-Objekt mit einem Eintrag pro Sprachcode
 (`de`, `en`).
 
+122 Substantive mit je 10 expliziten Formen (5 Kasus × 2 Numeri):
+
+| Deklination | Typ | Anzahl | Beispiele |
+|---|---|---|---|
+| 1. Dekl. | Feminina auf -η (`1_eta`) | 14 | ψυχή, ἀρχή, τέχνη |
+| 1. Dekl. | Feminina auf -ᾱ (`1_alpha_long`) | 8 | χώρα, ἡμέρα, οἰκία |
+| 1. Dekl. | Feminina auf -ᾰ (`1_alpha_short`) | 5 | θάλαττα, γλῶττα, δόξα |
+| 1. Dekl. | Maskulina auf -ης (`1_masc_hs`) | 6 | πολίτης, ποιητής, μαθητής |
+| 1. Dekl. | Maskulina auf -ας (`1_masc_as`) | 1 | νεανίας |
+| 2. Dekl. | Mask./Fem. auf -ος (`2_masc`) | 19 | λόγος, ἄνθρωπος, θεός |
+| 2. Dekl. | Neutra auf -ον (`2_neut`) | 8 | ἔργον, δῶρον, τέκνον |
+| 3. Dekl. | Verschlusslaute/τ-Stämme (`3_stop`) | 15 | φύλαξ, ἐλπίς, πατρίς |
+| 3. Dekl. | Nasale, ν-Stämme (`3_nasal`) | 8 | δαίμων, ἡγεμών, Ἕλλην |
+| 3. Dekl. | ντ-Stämme (`3_nt`) | 5 | γέρων, ἄρχων, λέων |
+| 3. Dekl. | Liquida, ρ-Stämme (`3_liquid`) | 7 | ῥήτωρ, πατήρ, μήτηρ |
+| 3. Dekl. | σ-Stämme (`3_sigma`) | 9 | γένος, ἔθνος, ἔτος |
+| 3. Dekl. | ι-Stämme (`3_vowel_is`) | 9 | πόλις, φύσις, δύναμις |
+| 3. Dekl. | ευ-Stämme (`3_vowel_eus`) | 8 | βασιλεύς, ἱερεύς, ἱππεύς |
+
+Neue Wörter werden in `assets/nouns.json` ergänzt. Format eines Eintrags:
+
+```json
+{
+  "lemma": "φιλόσοφος",
+  "gender": "m",
+  "type": "2_masc",
+  "meanings": {
+    "de": "Philosoph",
+    "en": "philosopher"
+  },
+  "forms": {
+    "sg": {
+      "nom": "φιλόσοφος",
+      "gen": "φιλοσόφου",
+      "dat": "φιλοσόφῳ",
+      "acc": "φιλόσοφον",
+      "voc": "φιλόσοφε"
+    },
+    "pl": {
+      "nom": "φιλόσοφοι",
+      "gen": "φιλοσόφων",
+      "dat": "φιλοσόφοις",
+      "acc": "φιλοσόφους",
+      "voc": "φιλόσοφοι"
+    }
+  }
+}
+```
+
+Verfügbare Typen: `1_eta` · `1_alpha_long` · `1_alpha_short` · `1_masc_hs` ·
+`1_masc_as` · `2_masc` · `2_neut` · `3_stop` · `3_nasal` · `3_liquid` ·
+`3_sigma` · `3_vowel_is` · `3_vowel_eus` · `3_nt`
+
+Geschlecht: `m` (maskulin) · `f` (feminin) · `n` (neutrum)
+
 ## Sprachen / Übersetzungen
 
 Die App folgt standardmäßig der Systemsprache. In den Einstellungen kann manuell
@@ -71,7 +126,3 @@ Fehlende Übersetzungen fallen automatisch auf die Template-Sprache Englisch zur
 
 Quellen: [F-Droid – Descriptions, Graphics and Screenshots](https://f-droid.org/docs/All_About_Descriptions_Graphics_and_Screenshots/),
 [F-Droid – Submitting Guide](https://f-droid.org/docs/Submitting_to_F-Droid_Quick_Start_Guide/).
-
-## Persistenz
-
-`shared_preferences` mit denselben Keys wie die PWA: `greek_trainer_settings`, `greek_trainer_stats`, `greek_trainer_errors`.
