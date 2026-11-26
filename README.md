@@ -4,6 +4,14 @@ Native Android-App für den Altgriechisch-Deklinationstrainer. Die PWA im Repo-R
 
 Lizenz: GNU GPL v3.0 (siehe `LICENSE` im Repo-Root). Nur Open-Source-Abhängigkeiten (Flutter SDK, `shared_preferences`).
 
+## Screenshots
+
+<p align="center">
+  <img src="screenshots/screenshot1.png" alt="Deklinationstrainer – Eingabe" width="300">
+  &nbsp;
+  <img src="screenshots/screenshot2.png" alt="Deklinationstrainer – Falsche Antwort mit Lösung" width="300">
+</p>
+
 ## Voraussetzungen
 
 - Flutter SDK (z. B. `brew install --cask flutter`)
