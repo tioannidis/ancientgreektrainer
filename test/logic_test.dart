@@ -146,7 +146,7 @@ void main() {
   });
 
   group('stats', () {
-    test('applyGrade und applySkip wie in der PWA', () {
+    test('applyGrade und applySkip', () {
       final s = Stats();
       final e = <String, double>{};
       applyGrade(s, e, 'ψυχή', GradeResult.correct);

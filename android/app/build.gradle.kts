@@ -26,9 +26,5 @@ android {
         versionName = flutter.versionName
     }
 
-    buildTypes {
-        release {
-            signingConfig = signingConfigs.getByName("debug")
-        }
-    }
+    // No signingConfig for release: F-Droid signs the APK with its own key.
 }

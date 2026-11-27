@@ -1,0 +1,1 @@
+Initial release: declension practice for 122 nouns, full paradigm view, statistics, dark mode, German and English interface.

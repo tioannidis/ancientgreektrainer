@@ -1,0 +1,1 @@
+Erste Version: Deklinationsübung für 122 Substantive, Paradigma-Ansicht, Statistik, Dunkelmodus, deutsche und englische Oberfläche.

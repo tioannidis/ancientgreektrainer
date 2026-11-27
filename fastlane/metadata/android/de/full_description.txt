@@ -1,0 +1,15 @@
+Der Altgriechisch Trainer hilft dir, die Deklination altgriechischer Substantive zu lernen.
+
+Gib den verlangten Kasus und Numerus eines Substantivs ein, zum Beispiel den Genitiv Plural eines Wortes. Die App prüft deine Antwort sofort und zeigt, ob Form, Akzent und Artikel stimmen. Bei Bedarf wird das vollständige Paradigma angezeigt.
+
+Funktionen:
+- 122 Substantive aus allen 14 Typen der 1., 2. und 3. Deklination
+- Filter nach Deklination und Kasus
+- Optional mit Abfrage des Artikels
+- Vollständige Paradigma-Tabelle mit Singular und Plural
+- Griechische Volltastatur für Diakritika oder die eigene Tastatur
+- Serie, Quote und Statistik; oft falsch beantwortete Wörter kommen häufiger
+- Dunkles, helles oder systemabhängiges Design
+- Deutsche und englische Oberfläche, standardmäßig der Systemsprache folgend
+
+Die App enthält keine Werbung, kein Tracking, benötigt keinen Netzzugriff und fordert keine Berechtigungen an. Sie steht unter der GNU General Public License v3.

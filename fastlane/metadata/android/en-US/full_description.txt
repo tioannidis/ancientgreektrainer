@@ -1,0 +1,15 @@
+Ancient Greek Trainer helps you learn the declension of Ancient Greek nouns.
+
+Type the requested case and number of a noun, for example the genitive plural of a word. The app checks your answer right away and tells you whether the form, the accent and the article are correct, and shows the full paradigm when you need it.
+
+Features:
+- 122 nouns covering all 14 noun types of the first, second and third declension
+- Filter by declension and by case
+- Optional question for the article
+- Full paradigm table with singular and plural
+- Greek keyboard for diacritics, or type with your own keyboard
+- Streak, accuracy and statistics; words you get wrong come up more often
+- Dark, light or system theme
+- German and English interface, following the system language by default
+
+The app contains no ads, performs no tracking, requires no network access and asks for no permissions. It is licensed under the GNU General Public License v3.

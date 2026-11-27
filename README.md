@@ -1,6 +1,6 @@
 # Ancient Greek Trainer (Flutter/Android)
 
-Native Android-App für den Altgriechisch-Deklinationstrainer. Die Logik der ursprünglichen PWA ist 1:1 nach Dart portiert (Filter, Fehlergewichtung, Antwortprüfung inkl. Akzente/Artikel, Statistik).
+Native Android-App für den Altgriechisch-Deklinationstrainer. Die Logik (Filter, Fehlergewichtung, Antwortprüfung inkl. Akzente/Artikel, Statistik) ist in Dart implementiert.
 
 Lizenz: GNU GPL v3.0 (siehe `LICENSE` im Repo-Root). Nur Open-Source-Abhängigkeiten (Flutter SDK, `shared_preferences`).
 
@@ -28,8 +28,19 @@ flutter run
 ## Tests & Build
 
 ```bash
-flutter analyze
+flutter pub get
 flutter test
+flutter build apk --release
+```
+
+Die Release-APK unter `build/app/outputs/flutter-apk/app-release.apk` ist absichtlich
+unsigniert: F-Droid signiert die APK mit eigenem Schlüssel. Sie lässt sich deshalb
+nicht direkt sideloaden.
+
+Für lokale Tests ein Debug-APK bauen. Es ist mit dem Android-Debug-Key signiert und
+lässt sich direkt installieren:
+
+```bash
 flutter build apk --debug
 ```
 
